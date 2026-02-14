@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Tamkeen.Domain.Entities.Evaluation>
+
+<h2>Evaluations</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Add Evaluation</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Enrollment Id</th>
+            <th>Score</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var eval in Model)
+        {
+            <tr>
+                <td>@eval.EnrollmentId</td>
+                <td>@eval.Score</td>
+                <td>@eval.Type</td>
+            </tr>
+        }
+    </tbody>
+</table>

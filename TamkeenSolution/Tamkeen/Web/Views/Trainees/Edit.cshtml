@@ -1,0 +1,26 @@
+﻿@model Tamkeen.Domain.Entities.Trainee
+
+<h2>Edit Trainee</h2>
+
+<form asp-action="Edit" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label>University</label>
+        <input asp-for="University" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Major</label>
+        <input asp-for="Major" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>GPA</label>
+        <input asp-for="GPA" class="form-control" />
+    </div>
+
+    <button class="btn btn-primary">Update</button>
+
+</form>

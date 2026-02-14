@@ -1,0 +1,32 @@
+﻿@model List<Tamkeen.Domain.Entities.Trainee>
+
+<h2>Trainees</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Create New</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>University</th>
+            <th>GPA</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var trainee in Model)
+        {
+            <tr>
+                <td>@trainee.User.FullName</td>
+                <td>@trainee.University</td>
+                <td>@trainee.GPA</td>
+                <td>@trainee.Status</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@trainee.Id" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Edit" asp-route-id="@trainee.Id" class="btn btn-warning btn-sm">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

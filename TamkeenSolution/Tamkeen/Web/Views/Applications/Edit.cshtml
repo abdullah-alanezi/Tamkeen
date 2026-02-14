@@ -1,0 +1,39 @@
+﻿@model Tamkeen.Domain.Entities.Application
+
+<h2>Edit Application</h2>
+
+<form asp-action="Edit" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label>Full Name</label>
+        <input asp-for="FullName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Email</label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>University</label>
+        <input asp-for="University" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Major</label>
+        <input asp-for="Major" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Status</label>
+        <select asp-for="Status"
+                class="form-control"
+                asp-items="Html.GetEnumSelectList<Tamkeen.Domain.Enums.ApplicationStatus>()">
+        </select>
+    </div>
+
+    <button class="btn btn-primary">Update</button>
+
+</form>

@@ -1,0 +1,27 @@
+﻿@model Tamkeen.Domain.Entities.TrainingProgram
+
+<h2>Program Details</h2>
+
+<ul class="list-group">
+
+    <li class="list-group-item">
+        <strong>Name:</strong> @Model.Name
+    </li>
+
+    <li class="list-group-item">
+        <strong>Description:</strong> @Model.Description
+    </li>
+
+    <li class="list-group-item">
+        <strong>Start Date:</strong> @Model.StartDate.ToShortDateString()
+    </li>
+
+    <li class="list-group-item">
+        <strong>End Date:</strong> @Model.EndDate.ToShortDateString()
+    </li>
+
+    <li class="list-group-item">
+        <strong>Capacity:</strong> @Model.Capacity
+    </li>
+
+</ul>
