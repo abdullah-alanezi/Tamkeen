@@ -1,10 +1,16 @@
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Tamkeen.Application.Interfaces;
+using Tamkeen.Domain.Entities;
 using Tamkeen.Infrastructure.Database;
+using Tamkeen.Infrastructure.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddScoped<ITraineeRepository, TraineeRepo>();
+builder.Services.AddScoped<IApplicationRepository, ApplicationRepo>();
+builder.Services.AddScoped<ITrainingProgramRepository, TrainingProgramRepo>();
 builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.Configure<StaticFileOptions>(options =>
 {
@@ -20,6 +26,9 @@ builder.Services.Configure<RazorViewEngineOptions>(options =>
     
 });
 builder.Services.AddControllersWithViews();
+
+
+
 
 var app = builder.Build();
 

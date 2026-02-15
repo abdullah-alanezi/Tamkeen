@@ -5,6 +5,6 @@ namespace Tamkeen.Application.Interfaces
 {
     public interface IEvaluationRepository : IBaseRepository<Evaluation>
     {
-        Task<IReadOnlyList<Evaluation>> GetByEnrollmentIdAsync(int enrollmentId);
+        Task<List<Evaluation>> GetByEnrollmentIdAsync(int enrollmentId);
     }
 }

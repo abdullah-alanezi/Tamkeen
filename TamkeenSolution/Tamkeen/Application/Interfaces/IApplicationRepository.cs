@@ -5,7 +5,7 @@ namespace Tamkeen.Application.Interfaces
 {
     public interface IApplicationRepository : IBaseRepository<Tamkeen.Domain.Entities.Application>
     {
-        Task<IReadOnlyList<Tamkeen.Domain.Entities.Application>> GetByStatusAsync(ApplicationStatus status);
+        Task<List<Tamkeen.Domain.Entities.Application>> GetByStatusAsync(ApplicationStatus status);
 
         Task<Tamkeen.Domain.Entities.Application?> GetByEmailAsync(string email);
     }

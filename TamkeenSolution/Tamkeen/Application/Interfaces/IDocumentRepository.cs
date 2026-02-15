@@ -5,6 +5,6 @@ namespace Tamkeen.Application.Interfaces
 {
     public interface IDocumentRepository : IBaseRepository<Document>
     {
-        Task<IReadOnlyList<Document>> GetByTraineeIdAsync(int traineeId);
+        Task<List<Document>> GetByTraineeIdAsync(int traineeId);
     }
 }

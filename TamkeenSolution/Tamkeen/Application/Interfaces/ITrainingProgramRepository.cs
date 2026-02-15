@@ -5,6 +5,6 @@ namespace Tamkeen.Application.Interfaces
 {
     public interface ITrainingProgramRepository : IBaseRepository<TrainingProgram>
     {
-        Task<IReadOnlyList<TrainingProgram>> GetActiveProgramsAsync();
+        Task<List<TrainingProgram>> GetActiveProgramsAsync();
     }
 }

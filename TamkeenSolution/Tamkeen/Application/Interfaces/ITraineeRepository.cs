@@ -8,7 +8,7 @@ namespace Tamkeen.Application.Interfaces
     {
         Task<Trainee?> GetWithDetailsAsync(int id);
 
-        Task<IReadOnlyList<Trainee>> GetByStatusAsync(TraineeStatus status);
+        Task<List<Trainee>> GetByStatusAsync(TraineeStatus status);
 
         Task<Trainee?> GetByUserIdAsync(int userId);
     }

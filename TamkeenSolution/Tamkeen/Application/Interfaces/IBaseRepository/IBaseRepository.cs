@@ -8,9 +8,9 @@ namespace Tamkeen.Application.Interfaces.IBaseRepository
 
         Task<T?> GetByPublicIdAsync(Guid publicId);
 
-        Task<IReadOnlyList<T>> GetAllAsync();
+        Task<List<T>> GetAllAsync();
 
-        Task<IReadOnlyList<T>> FindAsync(Expression<Func<T, bool>> predicate);
+        Task<List<T>> FindAsync(Expression<Func<T, bool>> predicate);
 
         Task AddAsync(T entity);
 
@@ -18,6 +18,6 @@ namespace Tamkeen.Application.Interfaces.IBaseRepository
 
         void Delete(T entity);
 
-        Task<int> SaveChangesAsync();
+        //Task<int> SaveChangesAsync();
     }
 }

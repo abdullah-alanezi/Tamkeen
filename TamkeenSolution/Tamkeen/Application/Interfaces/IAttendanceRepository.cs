@@ -5,6 +5,6 @@ namespace Tamkeen.Application.Interfaces
 {
     public interface IAttendanceRepository : IBaseRepository<AttendanceRecord>
     {
-        Task<IReadOnlyList<AttendanceRecord>> GetByEnrollmentIdAsync(int enrollmentId);
+        Task<List<AttendanceRecord>> GetByEnrollmentIdAsync(int enrollmentId);
     }
 }
