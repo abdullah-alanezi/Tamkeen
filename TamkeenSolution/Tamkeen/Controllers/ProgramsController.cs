@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Tamkeen.Application.Interfaces;
 
-namespace Tamkeen.Web.Controllers
+namespace Tamkeen.Controllers
 {
     public class ProgramsController : Controller
     {

@@ -12,19 +12,19 @@ builder.Services.AddScoped<ITraineeRepository, TraineeRepo>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepo>();
 builder.Services.AddScoped<ITrainingProgramRepository, TrainingProgramRepo>();
 builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.Configure<StaticFileOptions>(options =>
-{
-    options.FileProvider = new PhysicalFileProvider(
-        Path.Combine(builder.Environment.ContentRootPath, "Web", "wwwroot"));
-});
+//builder.Services.Configure<StaticFileOptions>(options =>
+//{
+//    options.FileProvider = new PhysicalFileProvider(
+//        Path.Combine(builder.Environment.ContentRootPath, "Web", "wwwroot"));
+//});
 // Add services to the container.
-builder.Services.Configure<RazorViewEngineOptions>(options =>
-{
-    options.ViewLocationFormats.Clear();
-    options.ViewLocationFormats.Add("/Web/Views/{1}/{0}" + RazorViewEngine.ViewExtension);
-    options.ViewLocationFormats.Add("/Web/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
+//builder.Services.Configure<RazorViewEngineOptions>(options =>
+//{
+//    options.ViewLocationFormats.Clear();
+//    options.ViewLocationFormats.Add("/Web/Views/{1}/{0}" + RazorViewEngine.ViewExtension);
+//    options.ViewLocationFormats.Add("/Web/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
     
-});
+//});
 builder.Services.AddControllersWithViews();
 
 
@@ -40,7 +40,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseStaticFiles();
+
 app.UseHttpsRedirection();
 app.UseRouting();
 

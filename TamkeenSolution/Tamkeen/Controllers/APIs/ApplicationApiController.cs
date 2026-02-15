@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Tamkeen.Application.Interfaces;
 using Tamkeen.Domain.Enums;
 
-namespace Tamkeen.Web.Controllers.APIs
+namespace Tamkeen.Controllers.APIs
 {
     [ApiController]
     [Route("api/applications")]
@@ -17,7 +17,7 @@ namespace Tamkeen.Web.Controllers.APIs
   
         // ✅ POST: api/applications
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Tamkeen.Domain.Entities.Application model)
+        public async Task<IActionResult> Create([FromBody] Domain.Entities.Application model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

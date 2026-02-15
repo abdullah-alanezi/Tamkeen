@@ -4,7 +4,7 @@ using Tamkeen.Application.Interfaces;
 using Tamkeen.Domain.Entities;
 using Tamkeen.Infrastructure.Repository;
 
-namespace Tamkeen.Web.Controllers
+namespace Tamkeen.Controllers
 {
     public class TraineesController : Controller
     {
