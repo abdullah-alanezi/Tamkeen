@@ -1,31 +1,121 @@
 ﻿@model Tamkeen.Domain.Entities.Trainee
 
-<h2>Create Trainee</h2>
+@{
+    ViewData["Title"] = "Create Trainee";
+}
 
-<form asp-action="Create" method="post">
-
-    <div class="mb-3">
-        <label>University</label>
-        <input asp-for="University" class="form-control" />
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a asp-action="Index" class="text-decoration-none">Trainees</a></li>
+                    <li class="breadcrumb-item active">New Registration</li>
+                </ol>
+            </nav>
+            <h2 class="fw-bold text-dark">Add New Trainee</h2>
+            <p class="text-muted">Fill in the academic details to register a new trainee in the system.</p>
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label>Major</label>
-        <input asp-for="Major" class="form-control" />
+    <div class="row">
+        <div class="col-xl-8 col-lg-10">
+            <div class="card card-custom border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h5 class="card-title mb-0 fw-bold"><i class="bi bi-person-plus me-2 text-primary"></i>Academic Information</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label asp-for="University" class="form-label fw-semibold small text-uppercase">University Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-building text-muted"></i></span>
+                                    <input asp-for="University" class="form-control bg-light border-start-0 ps-0" placeholder="e.g. King Saud University" />
+                                </div>
+                                <span asp-validation-for="University" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Major" class="form-label fw-semibold small text-uppercase">Academic Major</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-mortarboard text-muted"></i></span>
+                                    <input asp-for="Major" class="form-control bg-light border-start-0 ps-0" placeholder="e.g. Software Engineering" />
+                                </div>
+                                <span asp-validation-for="Major" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="GPA" class="form-label fw-semibold small text-uppercase">Cumulative GPA</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-graph-up text-muted"></i></span>
+                                    <input asp-for="GPA" class="form-control bg-light border-start-0 ps-0" placeholder="0.00" />
+                                </div>
+                                <span asp-validation-for="GPA" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Status" class="form-label fw-semibold small text-uppercase">Application Status</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-info-circle text-muted"></i></span>
+                                    <select asp-for="Status" class="form-select bg-light border-start-0 ps-0"
+                                            asp-items="Html.GetEnumSelectList<Tamkeen.Domain.Enums.TraineeStatus>()">
+                                    </select>
+                                </div>
+                                <span asp-validation-for="Status" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <hr class="my-4 opacity-50">
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a asp-action="Index" class="btn btn-light btn-action px-4">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-action px-5 shadow-sm">
+                                <i class="bi bi-check-lg"></i> Save Trainee
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-2 d-none d-xl-block">
+            <div class="card border-0 bg-primary bg-opacity-10 rounded-4 p-3">
+                <div class="card-body text-primary">
+                    <h6 class="fw-bold"><i class="bi bi-lightbulb me-2"></i> Quick Tip</h6>
+                    <p class="small mb-0">Ensure the GPA is updated according to the latest transcript. You can change the trainee status later from the details page.</p>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <div class="mb-3">
-        <label>GPA</label>
-        <input asp-for="GPA" class="form-control" />
-    </div>
+<style>
+    .form-control, .form-select {
+        border-radius: 0.5rem;
+        padding: 0.6rem 1rem;
+        border: 1px solid #e2e8f0;
+        transition: all 0.2s ease-in-out;
+    }
 
-    <div class="mb-3">
-        <label>Status</label>
-        <select asp-for="Status" class="form-control"
-                asp-items="Html.GetEnumSelectList<Tamkeen.Domain.Enums.TraineeStatus>()">
-        </select>
-    </div>
+    .form-control:focus, .form-select:focus {
+        background-color: #fff !important;
+        border-color: var(--tk-primary);
+        box-shadow: 0 0 0 4px rgba(78, 115, 223, 0.1);
+    }
 
-    <button class="btn btn-success">Save</button>
+    .input-group-text {
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+    }
 
-</form>
+    .btn-action {
+        border-radius: 0.5rem;
+        padding: 0.7rem 1.5rem;
+        font-weight: 600;
+    }
+</style>

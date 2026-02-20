@@ -17,6 +17,8 @@ namespace Tamkeen.Domain.Entities
         [Required]
         public string CVPath { get; set; }
 
+        public int programPostId { get; set; }
+        public ProgramPost programPost { get; set; }
         public ApplicationStatus Status { get; set; }
     }
 }

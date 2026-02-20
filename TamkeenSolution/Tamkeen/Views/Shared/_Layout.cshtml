@@ -3,54 +3,180 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Tamkeen System</title>
+    <title>@ViewData["Title"] - Tamkeen System</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
 
     <style>
-        body { background-color: #f4f6f9; }
-        .sidebar {
-            width: 240px;
-            min-height: 100vh;
-            background-color: #1f2937;
+        :root {
+            --sidebar-width: 260px;
+            --tk-primary: #4e73df;
+            --tk-dark: #1e293b;
+            --tk-bg: #f8fafc;
+            --tk-card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
         }
+
+        body { 
+            background-color: var(--tk-bg); 
+            font-family: 'Inter', sans-serif;
+            color: #334155;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: var(--tk-dark);
+            z-index: 1000;
+            transition: all 0.3s;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.05);
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            color: white;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
         .sidebar a {
-            color: #cbd5e1;
-            display: block;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
             padding: 12px 20px;
             text-decoration: none;
+            transition: all 0.2s;
+            margin: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.95rem;
         }
-        .sidebar a:hover {
-            background-color: #374151;
+
+        .sidebar a i { font-size: 1.2rem; margin-right: 12px; }
+
+        .sidebar a:hover, .sidebar a.active {
+            background-color: rgba(255,255,255,0.1);
             color: white;
         }
-        .content-wrapper { padding: 30px; }
+
+        /* Content Area */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s;
+        }
+
+        .top-navbar {
+            height: 70px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .content-body {
+            padding: 2rem;
+            flex-grow: 1;
+        }
+
+        /* Global UI Improvements for Views */
+        .card-custom {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: var(--tk-card-shadow);
+            background: white;
+        }
+
         .footer {
             background: white;
-            border-top: 1px solid #ddd;
-            padding: 15px;
+            border-top: 1px solid #e2e8f0;
+            padding: 1.25rem;
             text-align: center;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive */
+        @@media (max-width: 991.98px) {
+            .sidebar { transform: translateX(-100%); }
+            .main-wrapper { margin-left: 0; }
+            .sidebar.active { transform: translateX(0); }
         }
     </style>
 </head>
 <body>
+    
+    @Html.Partial("_Sidebar")
 
-    @Html.Partial("_Navbar")
+    <div class="main-wrapper">
+        
+        <header class="top-navbar">
+            <button class="btn d-lg-none" onclick="toggleSidebar()">
+                <i class="bi bi-list fs-3"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark" data-bs-toggle="dropdown">
+                        <img src="https://ui-avatars.com/api/?name=Admin+User&background=4e73df&color=fff" width="35" height="35" class="rounded-circle me-2">
+                        <span class="d-none d-md-inline fw-medium">@User.Identity.Name</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li>
+                                <a class="dropdown-item" asp-controller="Profile" asp-action="Index">
+                                    <i class="bi bi-person me-2"></i> Profile
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                @* يجب أن يكون الـ Form موجهاً للأكشن الصحيح في الـ Account Controller *@
+                                <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="bi bi-box-arrow-right me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        }
 
-    <div class="d-flex">
-        @Html.Partial("_Sidebar")
+                    </ul>
+                </div>
+            </div>
+        </header>
 
-        <div class="flex-fill content-wrapper">
+        <main class="content-body">
             @RenderBody()
-        </div>
-    </div>
+        </main>
 
-    <div class="footer">
-        © 2026 Tamkeen Development Platform
+        <footer class="footer">
+            &copy; 2026 <strong>Tamkeen Development Platform</strong>. All rights reserved.
+        </footer>
     </div>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
 

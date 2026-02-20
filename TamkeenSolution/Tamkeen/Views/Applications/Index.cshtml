@@ -1,16 +1,16 @@
-﻿@model List<Tamkeen.Domain.Entities.Application>
+﻿@model List<Tamkeen.Domain.Entities.ProgramPost>
 
 <h2>Applications</h2>
 
-<a asp-action="Create" class="btn btn-primary mb-3">Create Application</a>
+
 
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>University</th>
-            <th>Status</th>
+            <th>Name</th>
+            <th>Capacity</th>
+           
+            <th>End Date</th>
             <th></th>
         </tr>
     </thead>
@@ -18,13 +18,13 @@
         @foreach (var app in Model)
         {
             <tr>
-                <td>@app.FullName</td>
-                <td>@app.Email</td>
-                <td>@app.University</td>
-                <td>@app.Status</td>
+                <td>@app.trainingProgram.Name</td>
+                
+                <td>@app.trainingProgram.Capacity</td>
+                <td>@app.trainingProgram.EndDate</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@app.Id" class="btn btn-info btn-sm">Details</a>
-                    <a asp-action="Edit" asp-route-id="@app.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Details" asp-controller="Applications" asp-route-id="@app.Id" class="btn btn-info btn-sm">Details</a>
+                    
                 </td>
             </tr>
         }

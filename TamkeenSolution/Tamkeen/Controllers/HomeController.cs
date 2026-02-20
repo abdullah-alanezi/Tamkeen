@@ -6,7 +6,7 @@ namespace Tamkeen.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Dashboard()
+        public IActionResult Index()
         {
             return View();
         }

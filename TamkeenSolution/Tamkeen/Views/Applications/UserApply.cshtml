@@ -1,0 +1,48 @@
+﻿@model List<Tamkeen.Domain.Entities.ProgramPost>
+
+@{
+     Layout = "_AuthLayout"; 
+}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Available Training Programs</h2>
+        <p class="text-muted">Select a program below to start your professional journey.</p>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var post in Model.Where(p => p.trainingProgram.is_posted))
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="badge bg-primary-soft text-primary">
+                                <i class="bi bi-person-badge me-1"></i> @post.trainingProgram.Capacity Seats
+                            </span>
+                            <span class="text-muted small">
+                                <i class="bi bi-calendar3 me-1"></i> @post.trainingProgram.StartDate.ToString("MMM dd")
+                            </span>
+                        </div>
+                        
+                        <h5 class="card-title fw-bold text-dark mb-3">@post.trainingProgram.Name</h5>
+                        <p class="card-text text-secondary mb-4 text-truncate-3">
+                            @post.trainingProgram.Description
+                        </p>
+                        
+                        <div class="mt-auto">
+                            <a asp-action="Apply" asp-route-id="@post.Id" class="btn btn-outline-primary w-100 rounded-pill">
+                                View Details & Apply
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .hover-shadow:hover { transform: translateY(-5px); transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
+    .text-truncate-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .bg-primary-soft { background-color: #e7f0ff; }
+</style>

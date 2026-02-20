@@ -1,0 +1,153 @@
+﻿@model Tamkeen.Domain.Entities.Application;
+@{
+    Tamkeen.Domain.Entities.ProgramPost posts = ViewBag.Program;
+     Layout = "_AuthLayout"; 
+}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-11 col-xl-10">
+            <div class="card overflow-hidden border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="row g-0">
+                    <div class="col-md-5 bg-dark text-white p-4 p-lg-5 d-flex flex-column justify-content-between position-relative" style="background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%);">
+
+                        <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');"></div>
+
+                        <div class="position-relative">
+                            <a href="javascript:history.back()" class="btn btn-sm btn-outline-light mb-4 rounded-pill opacity-75">
+                                <i class="bi bi-arrow-left me-1"></i> Back
+                            </a>
+                            <h6 class="text-primary text-uppercase fw-bold ls-wider mb-2" style="letter-spacing: 2px;">Training Program</h6>
+                            <h2 class="display-6 fw-bold mb-4">@posts.trainingProgram.Name</h2>
+
+                            <div class="mb-5">
+                                <p class="text-light opacity-75 lh-lg">@posts.trainingProgram.Description</p>
+                            </div>
+
+                            <div class="info-badges">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-box bg-primary rounded-3 me-3">
+                                        <i class="bi bi-calendar-event p-2"></i>
+                                    </div>
+                                    <div>
+                                        <small class="d-block text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Timeline</small>
+                                        <span>@posts.trainingProgram.StartDate.ToString("dd MMM") - @posts.trainingProgram.EndDate.ToString("dd MMM yyyy")</span>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-box bg-success rounded-3 me-3">
+                                        <i class="bi bi-people p-2"></i>
+                                    </div>
+                                    <div>
+                                        <small class="d-block text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Availability</small>
+                                        <span>@posts.trainingProgram.Capacity Total Seats</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 pt-4 border-top border-secondary position-relative">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <small class="text-muted d-block">Current Interest</small>
+                                    <div class="progress mt-2" style="height: 6px; background: #444;">
+                                        @{
+                                            var percent = (posts.application?.Count ?? 0) * 100 / posts.trainingProgram.Capacity;
+                                        }
+                                        <div class="progress-bar bg-primary" style="width: @percent%"></div>
+                                    </div>
+                                </div>
+                                <span class="ms-3 fw-bold text-primary">@posts.application?.Count</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7 p-4 p-lg-5 bg-white">
+                        <div class="text-center text-md-start mb-4">
+                            <h3 class="fw-bold text-dark">Submit Application</h3>
+                            <p class="text-muted">Please provide your academic details to apply.</p>
+                        </div>
+
+                        <form asp-action="SubmitApplication"  method="post" enctype="multipart/form-data" class="needs-validation">
+                            
+
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="form-label fw-bold small text-uppercase">Full Name</label>
+                                    <input type="text" asp-for ="FullName" class="form-control custom-input" placeholder="Enter your full name" required>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="form-label fw-bold small text-uppercase">Email Address</label>
+                                    <input type="email" asp-for="Email" class="form-control custom-input" placeholder="name@example.com" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold small text-uppercase">University</label>
+                                    <input type="text" asp-for="University" class="form-control custom-input" placeholder="University name" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold small text-uppercase">Major</label>
+                                    <input type="text" asp-for="Major" class="form-control custom-input" placeholder="e.g. IT, Business" required>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="form-label fw-bold small text-uppercase">Your CV (PDF)</label>
+                                    <div class="cv-upload-container position-relative">
+                                        <input type="file" asp-for="CVPath" class="form-control position-absolute opacity-0 w-100 h-100" style="z-index: 5; cursor: pointer;" accept=".pdf" id="cvInput" required>
+                                        <div class="cv-placeholder border rounded-3 p-4 text-center bg-light">
+                                            <i class="bi bi-file-earmark-pdf fs-1 text-muted mb-2 d-block"></i>
+                                            <span id="fileName" class="text-secondary small">Drag & drop or click to upload PDF</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-lg w-100 rounded-3 mt-4 py-3 fw-bold shadow">
+                                Complete Application <i class="bi bi-chevron-right ms-1"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .custom-input {
+        padding: 0.75rem 1rem;
+        background-color: #f8f9fa;
+        border: 1px solid #eee;
+        border-radius: 8px;
+    }
+
+        .custom-input:focus {
+            background-color: #fff;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+        }
+
+    .icon-box i {
+        font-size: 1.2rem;
+    }
+
+    .cv-upload-container:hover .cv-placeholder {
+        border-color: #0d6efd;
+        background-color: #f1f7ff !important;
+    }
+
+    .ls-wider {
+        letter-spacing: 1px;
+    }
+</style>
+
+<script>
+    // Simple script to show selected filename
+    document.getElementById('cvInput').onchange = function () {
+        document.getElementById('fileName').innerHTML = this.files[0].name;
+        document.getElementById('fileName').classList.replace('text-secondary', 'text-primary');
+        document.getElementById('fileName').classList.add('fw-bold');
+    };
+</script>

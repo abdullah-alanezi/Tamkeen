@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using Tamkeen.Application.Interfaces;
+using Tamkeen.Domain.Entities;
 using Tamkeen.Domain.Enums;
 using Tamkeen.Infrastructure.Database;
 
@@ -17,7 +18,10 @@ namespace Tamkeen.Infrastructure.Repository
 
         public async Task AddAsync(Domain.Entities.Application entity)
         {
+            
+            
             await _context.AddAsync(entity);
+
             await _context.SaveChangesAsync();
         }
 

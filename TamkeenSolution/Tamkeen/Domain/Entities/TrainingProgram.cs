@@ -12,7 +12,10 @@ namespace Tamkeen.Domain.Entities
 
         public int Capacity { get; set; }
 
+        public ProgramPost programPost { get; set; }
         // Navigation
+
+        public bool is_posted { get; set; }
         public ICollection<ProgramEnrollment> Enrollments { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -11,22 +12,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ITraineeRepository, TraineeRepo>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepo>();
 builder.Services.AddScoped<ITrainingProgramRepository, TrainingProgramRepo>();
+builder.Services.AddScoped<IProgramPostRepository, ProgramPostRepo>();
+builder.Services.AddScoped<IEvaluationRepository, EvaluationRepo>();
 builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-//builder.Services.Configure<StaticFileOptions>(options =>
-//{
-//    options.FileProvider = new PhysicalFileProvider(
-//        Path.Combine(builder.Environment.ContentRootPath, "Web", "wwwroot"));
-//});
-// Add services to the container.
-//builder.Services.Configure<RazorViewEngineOptions>(options =>
-//{
-//    options.ViewLocationFormats.Clear();
-//    options.ViewLocationFormats.Add("/Web/Views/{1}/{0}" + RazorViewEngine.ViewExtension);
-//    options.ViewLocationFormats.Add("/Web/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
-    
-//});
+
+
 builder.Services.AddControllersWithViews();
 
+
+builder.Services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(options => {
+    options.Password.RequireDigit = false;
+    options.User.RequireUniqueEmail = true;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
 
 
 
@@ -44,13 +43,14 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Dashboard}/{action=Index}/{id?}")
+    pattern: "{controller=Account}/{action=Login}/{id?}")
     .WithStaticAssets();
 
 

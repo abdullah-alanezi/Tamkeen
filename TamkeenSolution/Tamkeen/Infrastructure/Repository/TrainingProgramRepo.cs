@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Tamkeen.Application.Interfaces;
+using Tamkeen.Domain.Entities;
 using Tamkeen.Infrastructure.Database;
 
 namespace Tamkeen.Infrastructure.Repository
@@ -54,14 +56,22 @@ namespace Tamkeen.Infrastructure.Repository
             return await _context.TrainingPrograms.ToListAsync();
         }
 
-        public Task<Domain.Entities.TrainingProgram?> GetByIdAsync(int id)
+        public async Task<Domain.Entities.TrainingProgram?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.TrainingPrograms.FindAsync(id);
         }
 
         public Task<Domain.Entities.TrainingProgram?> GetByPublicIdAsync(Guid publicId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task MakePosted(int id)
+        {
+            var program = await _context.TrainingPrograms.FindAsync(id);
+              program.is_posted = true;
+
+           await _context.SaveChangesAsync();
         }
 
         public void Update(Domain.Entities.TrainingProgram entity)

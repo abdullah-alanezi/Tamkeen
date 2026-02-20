@@ -1,9 +1,79 @@
-﻿<div class="sidebar">
-    <h5 class="text-white text-center py-3 border-bottom">Dashboard</h5>
+﻿<div class="sidebar d-flex flex-column" id="sidebar">
+    <div class="sidebar-header d-flex align-items-center justify-content-center py-4">
+        <div class="logo-icon bg-primary rounded-3 me-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+            <i class="bi bi-layers-half text-white fs-5"></i>
+        </div>
+        <span class="fs-4 fw-bold text-white tracking-tight">Tamkeen</span>
+    </div>
 
-    <a href="/Dashboard">🏠 Dashboard</a>
-    <a href="/Trainees">👨‍🎓 Trainees</a>
-    <a href="/Programs">📚 Programs</a>
-    <a href="/Applications">📥 Applications</a>
-    <a href="/Evaluations">⭐ Evaluations</a>
+    <div class="sidebar-content flex-grow-1 px-3">
+        
+        <small class="text-uppercase text-muted fw-bold mb-2 d-block ps-3" style="font-size: 0.65rem; letter-spacing: 0.1rem; opacity: 0.6;">Main Menu</small>
+        
+        <nav class="nav flex-column gap-1">
+            <a asp-controller="Dashboard" asp-action="Index" 
+               class="nav-link sidebar-link ">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>Overview</span>
+            </a>
+
+            <a asp-controller="Programs" asp-action="Index" 
+               class="nav-link sidebar-link ">
+                <i class="bi bi-journal-code"></i>
+                <span>Programs</span>
+            </a>
+
+            <a asp-controller="Trainees" asp-action="Index" 
+               class="nav-link sidebar-link">
+                <i class="bi bi-people-fill"></i>
+                <span>Trainees</span>
+            </a>
+        </nav>
+
+        <small class="text-uppercase text-muted fw-bold mt-4 mb-2 d-block ps-3" style="font-size: 0.65rem; letter-spacing: 0.1rem; opacity: 0.6;">Management</small>
+        
+        <nav class="nav flex-column gap-1">
+            <a asp-controller="Applications" asp-action="Index" class="nav-link sidebar-link">
+                <i class="bi bi-inbox-fill"></i>
+                <span>Applications</span>
+                <span class="badge rounded-pill bg-danger ms-auto" style="font-size: 0.7rem;">5</span>
+            </a>
+
+            <a asp-controller="Evaluations" asp-action="Index" class="nav-link sidebar-link">
+                <i class="bi bi-star-fill text-warning-custom"></i>
+                <span>Evaluations</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="sidebar-footer p-3 mt-auto border-top border-secondary border-opacity-25">
+        <a asp-controller="Settings" asp-action="Index" class="nav-link sidebar-link mb-3">
+            <i class="bi bi-gear-fill"></i>
+            <span>Settings</span>
+        </a>
+        
+        <div class="d-flex align-items-center bg-dark bg-opacity-50 p-2 rounded-3" style="border: 1px solid rgba(255,255,255,0.05);">
+            <div class="flex-shrink-0 ms-1">
+                <div class="bg-success rounded-circle shadow-sm" style="width: 8px; height: 8px; box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);"></div>
+            </div>
+            <div class="flex-grow-1 ms-2">
+                <div class="text-white opacity-75 fw-medium" style="font-size: 0.7rem;">System Online</div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    /* ... Existing styles from previous response ... */
+    
+    /* Small adjustment to ensure the badges look tight */
+    .badge {
+        padding: 0.35em 0.65em;
+        font-weight: 600;
+    }
+    
+    /* Ensure icons and text align perfectly */
+    .sidebar-link span {
+        margin-top: 1px;
+    }
+</style>
