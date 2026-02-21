@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Tamkeen.Application.Interfaces;
 using Tamkeen.Domain.Entities;
 
 namespace Tamkeen.Controllers
 {
+    [Authorize(Roles = "Admin,HR")]
     public class ProgramsController : Controller
     {
         private readonly ITrainingProgramRepository _programRepo;

@@ -1,7 +1,7 @@
-﻿@model Tamkeen.Domain.Entities.Application;
+﻿@model Tamkeen.Models.ModelsView.ApplicationViewModel;
 @{
     Tamkeen.Domain.Entities.ProgramPost posts = ViewBag.Program;
-     Layout = "_AuthLayout"; 
+    Layout = "_AuthLayout";
 }
 <div class="container py-5">
     <div class="row justify-content-center">
@@ -68,13 +68,13 @@
                             <p class="text-muted">Please provide your academic details to apply.</p>
                         </div>
 
-                        <form asp-action="SubmitApplication"  method="post" enctype="multipart/form-data" class="needs-validation">
-                            
+                        <form asp-action="SubmitApplication" method="post" enctype="multipart/form-data" class="needs-validation">
 
+                            <input type="hidden" name="id" value="@ViewBag.Program.Id" />
                             <div class="row g-3">
                                 <div class="col-md-12">
                                     <label class="form-label fw-bold small text-uppercase">Full Name</label>
-                                    <input type="text" asp-for ="FullName" class="form-control custom-input" placeholder="Enter your full name" required>
+                                    <input type="text" asp-for="FullName" class="form-control custom-input" placeholder="Enter your full name" required>
                                 </div>
 
                                 <div class="col-md-12">
@@ -95,7 +95,7 @@
                                 <div class="col-md-12">
                                     <label class="form-label fw-bold small text-uppercase">Your CV (PDF)</label>
                                     <div class="cv-upload-container position-relative">
-                                        <input type="file" asp-for="CVPath" class="form-control position-absolute opacity-0 w-100 h-100" style="z-index: 5; cursor: pointer;" accept=".pdf" id="cvInput" required>
+                                        <input type="file" asp-for="CVFile" class="form-control position-absolute opacity-0 w-100 h-100" style="z-index: 5; cursor: pointer;" accept=".pdf" id="cvInput" required>
                                         <div class="cv-placeholder border rounded-3 p-4 text-center bg-light">
                                             <i class="bi bi-file-earmark-pdf fs-1 text-muted mb-2 d-block"></i>
                                             <span id="fileName" class="text-secondary small">Drag & drop or click to upload PDF</span>
@@ -105,9 +105,15 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary btn-lg w-100 rounded-3 mt-4 py-3 fw-bold shadow">
-                                Complete Application <i class="bi bi-chevron-right ms-1"></i>
+                                Submit Application
                             </button>
                         </form>
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success mt-3">
+                                @TempData["SuccessMessage"]
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Tamkeen.Application.Interfaces;
 using Tamkeen.Domain.Entities;
@@ -6,6 +7,7 @@ using Tamkeen.Infrastructure.Repository;
 
 namespace Tamkeen.Controllers
 {
+    [Authorize(Roles = "Admin,HR")]
     public class TraineesController : Controller
     {
         private readonly ITraineeRepository _traineeRepo;

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tamkeen.Domain.Entities;
+using Tamkeen.Domain.Enums;
 using Tamkeen.Models.ModelsView;
 
 namespace Tamkeen.Controllers
@@ -18,7 +20,10 @@ namespace Tamkeen.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
         // ========================
         // Register GET
         // ========================
@@ -65,12 +70,12 @@ namespace Tamkeen.Controllers
         {
             if (ModelState.IsValid)
             {
-                // 1. ابحث عن المستخدم بواسطة الإيميل أولاً
+               
                 var user = await _userManager.FindByEmailAsync(model.Email);
 
                 if (user != null)
                 {
-                    // 2. استخدم الـ UserName الحقيقي المخزن في قاعدة البيانات لتسجيل الدخول
+                    
                     var result = await _signInManager.PasswordSignInAsync(
                         user.UserName,
                         model.Password,
@@ -83,7 +88,7 @@ namespace Tamkeen.Controllers
                     }
                 }
 
-                // إذا لم ينجح، أظهر خطأ
+                
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
             return View(model);
@@ -96,5 +101,6 @@ namespace Tamkeen.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login");
         }
+
     }
 }

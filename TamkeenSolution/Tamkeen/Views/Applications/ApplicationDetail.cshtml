@@ -1,0 +1,95 @@
+﻿@model Tamkeen.Domain.Entities.Application
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+
+                <div class="card-header bg-primary bg-gradient p-4 border-0">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-white rounded-circle p-3 shadow-sm">
+                            <i class="bi bi-person-fill text-primary fs-2"></i>
+                        </div>
+                        <div class="ms-4 text-white">
+                            <h3 class="mb-1 fw-bold">@Model.FullName</h3>
+                            <p class="mb-0 opacity-75"><i class="bi bi-envelope me-2"></i>@Model.Email</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-0">
+                    <div class="row g-0">
+                        <div class="col-md-7 p-4 border-end bg-light-subtle">
+                            <h6 class="text-uppercase text-muted small fw-bold mb-4">Application Details</h6>
+
+                            <div class="mb-4">
+                                <label class="text-muted small d-block">University</label>
+                                <span class="fw-medium fs-5 text-dark">@Model.University</span>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="text-muted small d-block">Major</label>
+                                <span class="fw-medium fs-5 text-dark">@Model.Major</span>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="text-muted small d-block mb-1">Documents</label>
+                                <a href="/uploads/@Model.CVPath" target="_blank" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                                    <i class="bi bi-file-earmark-pdf me-1"></i> View CV
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5 p-4 bg-white">
+                            <h6 class="text-uppercase text-muted small fw-bold mb-4">Management</h6>
+
+                            <form asp-action="UpdateStatus" method="post">
+                                <input type="hidden" asp-for="Id" /> @* Ensure ID is passed *@
+
+                                <div class="p-3 rounded-3 border bg-light mb-4 text-center">
+                                    <label class="small text-muted mb-2 d-block">Current Status</label>
+                                    <span class="badge rounded-pill @GetStatusClass(Model.Status) px-3 py-2 fs-6">
+                                        @Model.Status
+                                    </span>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label asp-for="Status" class="form-label fw-semibold">Change Status</label>
+                                    <select asp-for="Status"
+                                            class="form-select form-select-lg shadow-sm border-primary-subtle"
+                                            asp-items="Html.GetEnumSelectList<Tamkeen.Domain.Enums.ApplicationStatus>()">
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm">
+                                    Update Application
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-center mt-3">
+                <a asp-action="Index" class="text-decoration-none text-muted small">
+                    <i class="bi bi-arrow-left me-1"></i> Back to Applications List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    // Helper to color the badge based on status
+    string GetStatusClass(Tamkeen.Domain.Enums.ApplicationStatus status)
+    {
+        return status.ToString() switch
+        {
+            "Approved" => "text-bg-success",
+            "Pending" => "text-bg-warning",
+            "Rejected" => "text-bg-danger",
+            _ => "text-bg-secondary"
+        };
+    }
+}

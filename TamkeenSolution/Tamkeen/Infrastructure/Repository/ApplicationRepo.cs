@@ -48,9 +48,9 @@ namespace Tamkeen.Infrastructure.Repository
             throw new NotImplementedException();
         }
 
-        public Task<Domain.Entities.Application?> GetByIdAsync(int id)
+        public async Task<Domain.Entities.Application?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Applications.FindAsync(id);
         }
 
         public Task<Domain.Entities.Application?> GetByPublicIdAsync(Guid publicId)
@@ -68,6 +68,15 @@ namespace Tamkeen.Infrastructure.Repository
         public void Update(Domain.Entities.Application entity)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task UpdateStatus(int id, ApplicationStatus status)
+        {
+            var application = await _context.Applications.FindAsync(id);
+            if (application == null)  throw new Exception("Application not found");
+
+            application.Status = status;
+            await _context.SaveChangesAsync();
         }
     }
 }

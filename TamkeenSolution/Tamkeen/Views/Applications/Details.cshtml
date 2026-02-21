@@ -115,14 +115,15 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <a href="@app.CVPath" target="_blank" class="btn btn-sm btn-light border text-danger">
+                                            <a href="/uploads/@app.CVPath" target="_blank" class="btn btn-sm btn-light border text-danger">
                                                 <i class="bi bi-file-earmark-pdf-fill me-1"></i>CV
                                             </a>
                                         </td>
                                         <td class="text-end pe-4">
-                                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3">Review</button>
+                                            <a asp-action="ApplicationDetail" asp-route-id ="@app.Id" class="btn btn-sm btn-outline-primary rounded-pill px-3">Review</a>
                                         </td>
                                     </tr>
+                                    
                                 }
                             }
                             else

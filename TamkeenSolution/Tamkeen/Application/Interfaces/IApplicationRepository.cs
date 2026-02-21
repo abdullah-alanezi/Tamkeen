@@ -8,5 +8,6 @@ namespace Tamkeen.Application.Interfaces
         Task<List<Tamkeen.Domain.Entities.Application>> GetByStatusAsync(ApplicationStatus status);
 
         Task<Tamkeen.Domain.Entities.Application?> GetByEmailAsync(string email);
+        Task UpdateStatus(int id, ApplicationStatus status);
     }
 }

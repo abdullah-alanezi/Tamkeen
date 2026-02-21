@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using Tamkeen.Application.Interfaces;
 
 namespace Tamkeen.Controllers
@@ -12,10 +13,10 @@ namespace Tamkeen.Controllers
         {
             _evaluationRepo = evaluationRepo;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var _evaluationRepo.GetAllAsync();
-            return View();
+            var evaluation = await _evaluationRepo.GetAllAsync();
+            return View(evaluation);
         }
     }
 }

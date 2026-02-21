@@ -32,11 +32,11 @@ namespace Tamkeen.Infrastructure.Database
                 entity.HasMany(x => x.Enrollments).WithOne(x => x.Trainee).OnDelete(DeleteBehavior.Restrict);
                 }
                 );
-            modelBuilder.Entity<Tamkeen.Domain.Entities.Application>(entity =>
-            {
-                entity.Property(x => x.Status).HasDefaultValue(ApplicationStatus.Pending);
+            //modelBuilder.Entity<Tamkeen.Domain.Entities.Application>(entity =>
+            //{
+            //    entity.Property(x => x.Status).HasDefaultValue(ApplicationStatus.Pending);
 
-            });
+            //});
 
             modelBuilder.Entity<ProgramPost>(entity => {
 
