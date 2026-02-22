@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Tamkeen.Application.Interfaces;
 using Tamkeen.Domain.Entities;
 using Tamkeen.Domain.Enums;
-using Tamkeen.Models.ModelsView;
+using Tamkeen.Models.ViewModels;
 
 namespace Tamkeen.Controllers
 {

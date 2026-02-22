@@ -7,6 +7,7 @@ using Tamkeen.Domain.Entities;
 using Tamkeen.Infrastructure.Database;
 using Tamkeen.Infrastructure.Repository;
 using Tamkeen.Infrastructure.Roles;
+using Tamkeen.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddScoped<IApplicationRepository, ApplicationRepo>();
 builder.Services.AddScoped<ITrainingProgramRepository, TrainingProgramRepo>();
 builder.Services.AddScoped<IProgramPostRepository, ProgramPostRepo>();
 builder.Services.AddScoped<IEvaluationRepository, EvaluationRepo>();
+builder.Services.AddScoped<TraineeAccountService>();
 builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUserRepository, UserRepo>();

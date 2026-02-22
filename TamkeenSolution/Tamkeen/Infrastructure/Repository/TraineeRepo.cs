@@ -44,10 +44,7 @@ namespace Tamkeen.Infrastructure.Repository
             }
         }
 
-        public async Task<List<Trainee>> FindAsync(Expression<Func<Trainee, bool>> predicate)
-        {
-            return await _context.Trainees.Where(predicate).ToListAsync();
-        }
+
 
         public  async Task<List<Trainee>> GetAllAsync()
         {

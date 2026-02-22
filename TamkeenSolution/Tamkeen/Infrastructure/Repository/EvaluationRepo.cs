@@ -25,10 +25,7 @@ namespace Tamkeen.Infrastructure.Repository
             throw new NotImplementedException();
         }
 
-        public Task<List<Evaluation>> FindAsync(Expression<Func<Evaluation, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public async Task<List<Evaluation>> GetAllAsync()
         {

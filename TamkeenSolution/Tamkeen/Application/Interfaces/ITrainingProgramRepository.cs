@@ -5,7 +5,7 @@ namespace Tamkeen.Application.Interfaces
 {
     public interface ITrainingProgramRepository : IBaseRepository<TrainingProgram>
     {
-        Task<List<TrainingProgram>> GetActiveProgramsAsync();
+        
         Task MakePosted(int id);
     }
 }

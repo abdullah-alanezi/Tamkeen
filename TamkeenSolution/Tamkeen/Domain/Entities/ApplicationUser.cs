@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Tamkeen.Domain.Entities
 {
-    public class ApplicationUser //: IdentityUser<int>
+    public class ApplicationUser 
     {
 
         [Key]
@@ -20,9 +20,9 @@ namespace Tamkeen.Domain.Entities
         public Trainee? TraineeProfile { get; set; }
 
 
-        public Guid? UserId { get; set; }
+        public int? UserId { get; set; }
 
-        public IdentityUser UserInfo { get; set; }
+        public IdentityUser<int> UserInfo { get; set; }
 
 
 

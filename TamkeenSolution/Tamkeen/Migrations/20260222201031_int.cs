@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Tamkeen.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class @int : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,31 +53,6 @@ namespace Tamkeen.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "IdentityUser",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IdentityUser", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TrainingPrograms",
                 columns: table => new
                 {
@@ -116,6 +91,29 @@ namespace Tamkeen.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationUser",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NationalId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ProfileImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationUser", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ApplicationUser_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -206,29 +204,6 @@ namespace Tamkeen.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "applicationUsers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NationalId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ProfileImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserInfoId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_applicationUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_applicationUsers_IdentityUser_UserInfoId",
-                        column: x => x.UserInfoId,
-                        principalTable: "IdentityUser",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProgramPosts",
                 columns: table => new
                 {
@@ -271,9 +246,9 @@ namespace Tamkeen.Migrations
                 {
                     table.PrimaryKey("PK_Trainees", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Trainees_applicationUsers_UserId",
+                        name: "FK_Trainees_ApplicationUser_UserId",
                         column: x => x.UserId,
-                        principalTable: "applicationUsers",
+                        principalTable: "ApplicationUser",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -290,7 +265,7 @@ namespace Tamkeen.Migrations
                     Major = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CVPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     programPostId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     PublicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -353,6 +328,11 @@ namespace Tamkeen.Migrations
                 {
                     table.PrimaryKey("PK_programEnrollments", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_programEnrollments_ApplicationUser_ManagerId",
+                        column: x => x.ManagerId,
+                        principalTable: "ApplicationUser",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_programEnrollments_Trainees_TraineeId",
                         column: x => x.TraineeId,
                         principalTable: "Trainees",
@@ -364,11 +344,6 @@ namespace Tamkeen.Migrations
                         principalTable: "TrainingPrograms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_programEnrollments_applicationUsers_ManagerId",
-                        column: x => x.ManagerId,
-                        principalTable: "applicationUsers",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -398,7 +373,7 @@ namespace Tamkeen.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Evaluation",
+                name: "Evaluations",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -415,15 +390,15 @@ namespace Tamkeen.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Evaluation", x => x.Id);
+                    table.PrimaryKey("PK_Evaluations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Evaluation_applicationUsers_EvaluatedById",
+                        name: "FK_Evaluations_ApplicationUser_EvaluatedById",
                         column: x => x.EvaluatedById,
-                        principalTable: "applicationUsers",
+                        principalTable: "ApplicationUser",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Evaluation_programEnrollments_EnrollmentId",
+                        name: "FK_Evaluations_programEnrollments_EnrollmentId",
                         column: x => x.EnrollmentId,
                         principalTable: "programEnrollments",
                         principalColumn: "Id",
@@ -436,9 +411,11 @@ namespace Tamkeen.Migrations
                 column: "programPostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_applicationUsers_UserInfoId",
-                table: "applicationUsers",
-                column: "UserInfoId");
+                name: "IX_ApplicationUser_UserId",
+                table: "ApplicationUser",
+                column: "UserId",
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -490,13 +467,13 @@ namespace Tamkeen.Migrations
                 column: "TraineeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Evaluation_EnrollmentId",
-                table: "Evaluation",
+                name: "IX_Evaluations_EnrollmentId",
+                table: "Evaluations",
                 column: "EnrollmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Evaluation_EvaluatedById",
-                table: "Evaluation",
+                name: "IX_Evaluations_EvaluatedById",
+                table: "Evaluations",
                 column: "EvaluatedById");
 
             migrationBuilder.CreateIndex(
@@ -556,16 +533,13 @@ namespace Tamkeen.Migrations
                 name: "Documents");
 
             migrationBuilder.DropTable(
-                name: "Evaluation");
+                name: "Evaluations");
 
             migrationBuilder.DropTable(
                 name: "ProgramPosts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "programEnrollments");
@@ -577,10 +551,10 @@ namespace Tamkeen.Migrations
                 name: "TrainingPrograms");
 
             migrationBuilder.DropTable(
-                name: "applicationUsers");
+                name: "ApplicationUser");
 
             migrationBuilder.DropTable(
-                name: "IdentityUser");
+                name: "AspNetUsers");
         }
     }
 }

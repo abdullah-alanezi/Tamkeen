@@ -4,6 +4,7 @@ using Tamkeen.Application.Interfaces;
 using Tamkeen.Domain.Entities;
 using Tamkeen.Domain.Enums;
 using Tamkeen.Infrastructure.Database;
+using Tamkeen.Infrastructure.Services;
 
 namespace Tamkeen.Infrastructure.Repository
 {
@@ -11,9 +12,11 @@ namespace Tamkeen.Infrastructure.Repository
     {
         private readonly ApplicationDbContext _context;
 
-        public ApplicationRepo(ApplicationDbContext context)
+        private readonly TraineeAccountService _traineeAccountService;
+        public ApplicationRepo(ApplicationDbContext context, TraineeAccountService traineeAccountService)
         {
             _context = context;
+            _traineeAccountService = traineeAccountService;
         }
 
         public async Task AddAsync(Domain.Entities.Application entity)
@@ -30,10 +33,7 @@ namespace Tamkeen.Infrastructure.Repository
             throw new NotImplementedException();
         }
 
-        public Task<List<Domain.Entities.Application>> FindAsync(Expression<Func<Domain.Entities.Application, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public async Task<List<Domain.Entities.Application>> GetAllAsync()
         {
@@ -73,9 +73,21 @@ namespace Tamkeen.Infrastructure.Repository
         public async Task UpdateStatus(int id, ApplicationStatus status)
         {
             var application = await _context.Applications.FindAsync(id);
-            if (application == null)  throw new Exception("Application not found");
+
+            if (application == null)
+                throw new Exception("Application not found");
+
 
             application.Status = status;
+
+
+            // اذا Accepted
+            if (status == ApplicationStatus.Accepted)
+            {
+                await _traineeAccountService.CreateTraineeAccountAsync(application);
+            }
+
+
             await _context.SaveChangesAsync();
         }
     }

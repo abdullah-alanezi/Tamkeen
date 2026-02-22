@@ -40,15 +40,6 @@ namespace Tamkeen.Infrastructure.Repository
                     
         }
 
-        public Task<List<Domain.Entities.TrainingProgram>> FindAsync(Expression<Func<Domain.Entities.TrainingProgram, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Domain.Entities.TrainingProgram>> GetActiveProgramsAsync()
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<List<Domain.Entities.TrainingProgram>> GetAllAsync()
         {

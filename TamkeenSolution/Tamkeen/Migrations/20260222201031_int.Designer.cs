@@ -12,8 +12,8 @@ using Tamkeen.Infrastructure.Database;
 namespace Tamkeen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260219081512_Init")]
-    partial class Init
+    [Migration("20260222201031_int")]
+    partial class @int
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,58 +77,6 @@ namespace Tamkeen.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser<int>", b =>
@@ -312,9 +260,7 @@ namespace Tamkeen.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
+                        .HasColumnType("int");
 
                     b.Property<string>("University")
                         .IsRequired()
@@ -354,17 +300,16 @@ namespace Tamkeen.Migrations
                     b.Property<string>("ProfileImagePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserInfoId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserInfoId");
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("applicationUsers");
+                    b.ToTable("ApplicationUser");
                 });
 
             modelBuilder.Entity("Tamkeen.Domain.Entities.AttendanceRecord", b =>
@@ -492,7 +437,7 @@ namespace Tamkeen.Migrations
 
                     b.HasIndex("EvaluatedById");
 
-                    b.ToTable("Evaluation");
+                    b.ToTable("Evaluations");
                 });
 
             modelBuilder.Entity("Tamkeen.Domain.Entities.ProgramEnrollment", b =>
@@ -726,9 +671,10 @@ namespace Tamkeen.Migrations
 
             modelBuilder.Entity("Tamkeen.Domain.Entities.ApplicationUser", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "UserInfo")
-                        .WithMany()
-                        .HasForeignKey("UserInfoId");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser<int>", "UserInfo")
+                        .WithOne()
+                        .HasForeignKey("Tamkeen.Domain.Entities.ApplicationUser", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("UserInfo");
                 });

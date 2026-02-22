@@ -21,6 +21,7 @@ namespace Tamkeen.Infrastructure.Database
         public DbSet<TrainingProgram> TrainingPrograms {  get; set; }
         public DbSet<ProgramPost> ProgramPosts { get; set; }
         public DbSet<Evaluation> Evaluations {  get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers {  get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,6 +33,15 @@ namespace Tamkeen.Infrastructure.Database
                 entity.HasMany(x => x.Enrollments).WithOne(x => x.Trainee).OnDelete(DeleteBehavior.Restrict);
                 }
                 );
+
+            modelBuilder.Entity<ApplicationUser>(entity =>
+            {
+                entity.HasOne(a => a.UserInfo)
+                      .WithOne()
+                      .HasForeignKey<ApplicationUser>(a => a.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
             //modelBuilder.Entity<Tamkeen.Domain.Entities.Application>(entity =>
             //{
             //    entity.Property(x => x.Status).HasDefaultValue(ApplicationStatus.Pending);

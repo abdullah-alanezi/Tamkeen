@@ -1,0 +1,31 @@
+﻿<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    // Use a small delay or ensure the DOM is fully ready
+    document.addEventListener("DOMContentLoaded", function() {
+        // We use @(TempData["..."]) to ensure Razor renders it correctly
+        var success = '@(TempData["SuccessMessage"] ?? "")';
+        var error = '@(TempData["ErrorMessage"] ?? "")';
+
+        if (success !== "") {
+            Swal.fire({
+                icon: 'success',
+                title: 'Done!',
+                text: success,
+                timer: 3000,
+                showConfirmButton: false,
+                toast: true, // Optional: Makes it a small toast in the corner
+                position: 'top-end'
+            });
+        }
+
+        if (error !== "") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error,
+                confirmButtonColor: '#4e73df'
+            });
+        }
+    });
+</script>

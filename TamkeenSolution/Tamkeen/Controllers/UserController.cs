@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tamkeen.Application.Interfaces;
-using Tamkeen.Models.ModelsView;
+using Tamkeen.Models.ViewModels;
 
 namespace Tamkeen.Controllers
 {

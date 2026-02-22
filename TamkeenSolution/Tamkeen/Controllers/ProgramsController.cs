@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Tamkeen.Application.Interfaces;
 using Tamkeen.Domain.Entities;
+using Tamkeen.Models.ViewModels;
 
 namespace Tamkeen.Controllers
 {
@@ -28,12 +29,43 @@ namespace Tamkeen.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(TrainingProgram program)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(TrainingProgramViewModel model)
         {
-            await _programRepo.AddAsync(program);
-            return RedirectToAction("Create");
-        }
+            
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
+            try
+            {
+                
+                var entity = new TrainingProgram
+                {
+                    Name = model.Name,
+                    Description = model.Description,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    Capacity = model.Capacity,
+                    
+                };
+
+                await _programRepo.AddAsync(entity);
+
+            
+                TempData["SuccessMessage"] = "Program saved successfully!";
+
+                return RedirectToAction(nameof(Create)); 
+            }
+            catch (Exception ex)
+            {
+    
+                TempData["ErrorMessage"] = "An error occurred while saving. Please check your data and try again.";
+
+                return View(model); 
+            }
+        }
         public async Task<IActionResult> Details([FromRoute]int id) {
         
             var program = await _programRepo.GetByIdAsync(id);

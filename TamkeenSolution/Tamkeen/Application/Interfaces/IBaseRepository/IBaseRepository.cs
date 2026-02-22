@@ -10,7 +10,7 @@ namespace Tamkeen.Application.Interfaces.IBaseRepository
 
         Task<List<T>> GetAllAsync();
 
-        Task<List<T>> FindAsync(Expression<Func<T, bool>> predicate);
+       
 
         Task AddAsync(T entity);
 

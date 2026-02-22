@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tamkeen.Domain.Entities;
 using Tamkeen.Domain.Enums;
-using Tamkeen.Models.ModelsView;
+using Tamkeen.Models.ViewModels;
 
 namespace Tamkeen.Controllers
 {

@@ -1,4 +1,5 @@
-﻿@model Tamkeen.Domain.Entities.TrainingProgram
+﻿@using Tamkeen.Models.ViewModels
+@model TrainingProgramViewModel
 
 @{
     ViewData["Title"] = "Create Training Program";
@@ -106,10 +107,12 @@
                         <div class="mb-3">
                             <label asp-for="StartDate" class="form-label small fw-bold text-uppercase text-secondary">Start Date</label>
                             <input asp-for="StartDate" type="date" class="form-control form-control-modern border-0 shadow-sm" />
+                            <span asp-validation-for="StartDate" class="text-danger small"></span>
                         </div>
                         <div class="mb-0">
                             <label asp-for="EndDate" class="form-label small fw-bold text-uppercase text-secondary">End Date</label>
                             <input asp-for="EndDate" type="date" class="form-control form-control-modern border-0 shadow-sm" />
+                            <span asp-validation-for="EndDate" class="text-danger small"></span>
                         </div>
                     </div>
 
@@ -121,7 +124,9 @@
                             </span>
                             <input asp-for="Capacity" type="number" class="form-control form-control-modern border-start-0" placeholder="e.g. 25" />
                         </div>
+                        <span asp-validation-for="Capacity" class="text-danger small"></span>
                     </div>
+
 
                     <hr class="my-4 opacity-50">
 
@@ -145,3 +150,9 @@
         </div>
     </form>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,4 +1,4 @@
-﻿namespace Tamkeen.Models.ModelsView
+﻿namespace Tamkeen.Models.ViewModels
 {
     public class UserRolesViewModel
     {

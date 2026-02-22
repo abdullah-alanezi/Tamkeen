@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Tamkeen.Models.ModelsView
+namespace Tamkeen.Models.ViewModels
 {
     public class LoginViewModel
     {
