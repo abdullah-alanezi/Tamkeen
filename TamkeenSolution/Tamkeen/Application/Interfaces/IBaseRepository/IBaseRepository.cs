@@ -14,7 +14,7 @@ namespace Tamkeen.Application.Interfaces.IBaseRepository
 
         Task AddAsync(T entity);
 
-        void Update(T entity);
+        Task Update(T entity);
 
         void Delete(T entity);
 

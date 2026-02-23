@@ -12,8 +12,8 @@ using Tamkeen.Infrastructure.Database;
 namespace Tamkeen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260222201031_int")]
-    partial class @int
+    [Migration("20260223100049_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

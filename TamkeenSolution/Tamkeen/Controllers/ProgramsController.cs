@@ -74,10 +74,59 @@ namespace Tamkeen.Controllers
             
         }
 
-        public async Task<IActionResult> Edit([FromRoute]int id)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
         {
             var program = await _programRepo.GetByIdAsync(id);
-            return View(program);
+            if (program == null) return NotFound();
+
+            // Map Entity to ViewModel
+            var model = new TrainingProgramViewModel
+            {
+                Id = program.Id,
+                Name = program.Name,
+                Description = program.Description,
+                StartDate = program.StartDate,
+                EndDate = program.EndDate,
+                Capacity = program.Capacity
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken] // Security best practice
+        public async Task<IActionResult> Edit(TrainingProgramViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            try
+            {
+                var entity = new TrainingProgram
+                {
+                    Id = model.Id, // CRITICAL: You must include the ID
+                    Name = model.Name,
+                    Description = model.Description,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    Capacity = model.Capacity
+                };
+
+                // Use await for the update operation
+                await _programRepo.Update(entity);
+
+                TempData["SuccessMessage"] = "Program Updated successfully!";
+                return View(model);
+
+            }
+            catch (Exception ex) {
+                TempData["ErrorMessage"] = $"An error occurred while saving. Please check your data and try again.\n{ex.Message}";
+
+                return View(model);
+            }
         }
     }
 }

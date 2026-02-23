@@ -88,9 +88,9 @@ namespace Tamkeen.Infrastructure.Repository
         //    throw new NotImplementedException();
         //}
 
-        public void Update(Trainee entity)
+        public async Task Update(Trainee entity)
         {
-            var trainee = _context.Trainees.FirstOrDefault(x => x.Id == entity.Id);
+            var trainee = await _context.Trainees.FirstOrDefaultAsync(x => x.Id == entity.Id);
             if (entity == null || trainee == null)
             {
                 throw new NotImplementedException("Trainee Not Found");
@@ -106,7 +106,7 @@ namespace Tamkeen.Infrastructure.Repository
                 trainee.University = entity.University;
 
                 _context.Trainees.Update(trainee);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 

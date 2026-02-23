@@ -60,14 +60,27 @@ namespace Tamkeen.Infrastructure.Repository
         public async Task MakePosted(int id)
         {
             var program = await _context.TrainingPrograms.FindAsync(id);
+            if (program != null)
               program.is_posted = true;
 
            await _context.SaveChangesAsync();
         }
 
-        public void Update(Domain.Entities.TrainingProgram entity)
+        public async Task Update(Domain.Entities.TrainingProgram entity)
         {
-            throw new NotImplementedException();
+            var trackedProgram = await _context.TrainingPrograms
+                .FirstOrDefaultAsync(x => x.Id == entity.Id);
+
+            if (trackedProgram != null)
+            {
+                // نسخ القيم
+                _context.Entry(trackedProgram).CurrentValues.SetValues(entity);
+
+                // أخبر EF ألا يقوم بتحديث هذا الحقل تحديداً
+                _context.Entry(trackedProgram).Property(x => x.is_posted).IsModified = false;
+
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

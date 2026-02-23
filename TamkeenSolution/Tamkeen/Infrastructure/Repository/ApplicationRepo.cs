@@ -65,7 +65,7 @@ namespace Tamkeen.Infrastructure.Repository
             return appBystatus;
         }
 
-        public void Update(Domain.Entities.Application entity)
+        public Task Update(Domain.Entities.Application entity)
         {
             throw new NotImplementedException();
         }

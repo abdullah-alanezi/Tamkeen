@@ -31,18 +31,26 @@ namespace Tamkeen.Infrastructure.Repository
             return PostProgram;
         }
 
-        public void Post(int programId)
+        public async Task PostAsync(int programId)
         {
             
-            var program = _context.TrainingPrograms.Find(programId);
+            var program = await _context.TrainingPrograms.FindAsync(programId);
 
             var Post = new ProgramPost();
 
-            Post.trainingProgram = program;
+            if (program != null)
+            {
+                Post.trainingProgram = program;
+                await _context.AddAsync(Post);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Failed To Post Program");
+            }
           
 
-            _context.Add(Post);
-            _context.SaveChanges();
+
 
         }
     }

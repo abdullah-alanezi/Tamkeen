@@ -1,4 +1,5 @@
-﻿@model Tamkeen.Domain.Entities.TrainingProgram
+﻿@using Tamkeen.Models.ViewModels
+@model TrainingProgramViewModel
 
 @{
     ViewData["Title"] = "Edit Program Settings";
@@ -38,12 +39,12 @@
         position: relative;
     }
 
-    .input-wrapper i {
-        position: absolute;
-        left: 1rem;
-        top: 1rem;
-        color: #94a3b8;
-    }
+        .input-wrapper i {
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            color: #94a3b8;
+        }
 
     .form-control-custom {
         padding: 0.75rem 1rem 0.75rem 2.8rem;
@@ -53,18 +54,11 @@
         transition: all 0.2s;
     }
 
-    .form-control-custom:focus {
-        background-color: #fff;
-        border-color: #4e73df;
-        box-shadow: 0 0 0 4px rgba(78, 115, 223, 0.1);
-    }
-
-    .duration-indicator {
-        background: #f0f7ff;
-        border-radius: 0.75rem;
-        padding: 1rem;
-        border: 1px solid #dbeafe;
-    }
+        .form-control-custom:focus {
+            background-color: #fff;
+            border-color: #4e73df;
+            box-shadow: 0 0 0 4px rgba(78, 115, 223, 0.1);
+        }
 
     .sticky-save-bar {
         position: sticky;
@@ -72,10 +66,16 @@
         z-index: 1000;
         background: rgba(255, 255, 255, 0.9);
         backdrop-filter: blur(8px);
-        border: 1px solid rgba(0, 0, 0, 0.05);
         border-radius: 100px;
         padding: 0.75rem 1.5rem;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    /* Style for validation messages to look better with your theme */
+    .field-validation-error {
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-top: 4px;
+        display: block;
     }
 </style>
 
@@ -83,14 +83,18 @@
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
             <h2 class="fw-bold text-dark mb-1">Edit Program Settings</h2>
-            <p class="text-muted mb-0">Modify configuration and logistics for <strong>@Model.Name</strong></p>
+            <p class="text-muted mb-0">Modify configuration for <strong>@Model.Name</strong></p>
         </div>
-        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-light rounded-pill px-4">
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-light rounded-pill px-4 border">
             <i class="bi bi-eye me-2"></i>View Details
         </a>
     </div>
 
+    @* Client-side validation summary for logic errors (like EndDate < StartDate) *@
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-4 shadow-sm mb-4"></div>
+
     <form asp-action="Edit" method="post">
+        @* This hidden input is the most important part to make Update work! *@
         <input type="hidden" asp-for="Id" />
 
         <div class="row g-4">
@@ -98,24 +102,24 @@
                 <div class="glass-card p-4 p-md-5">
                     <div class="form-section-header">
                         <div class="bg-primary text-white rounded-3 p-2 me-3">
-                            <i class="bi bi-pencil-square px-1"></i>
+                            <i class="bi bi-pencil-square"></i>
                         </div>
                         <h5 class="mb-0 fw-bold">Program Content</h5>
                     </div>
 
                     <div class="mb-4">
-                        <label asp-for="Name" class="form-label-modern">Program Title</label>
+                        <label asp-for="Name" class="form-label-modern"></label>
                         <div class="input-wrapper">
                             <i class="bi bi-tag"></i>
-                            <input asp-for="Name" class="form-control form-control-custom" placeholder="Enter program name..." />
+                            <input asp-for="Name" class="form-control form-control-custom" placeholder="Program Title" />
                         </div>
-                        <span asp-validation-for="Name" class="text-danger small"></span>
+                        <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
 
                     <div class="mb-0">
-                        <label asp-for="Description" class="form-label-modern">Full Description</label>
-                        <textarea asp-for="Description" class="form-control form-control-custom ps-3" rows="8" placeholder="Outline the curriculum and goals..."></textarea>
-                        <span asp-validation-for="Description" class="text-danger small"></span>
+                        <label asp-for="Description" class="form-label-modern"></label>
+                        <textarea asp-for="Description" class="form-control form-control-custom ps-3" rows="8"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -124,65 +128,72 @@
                 <div class="glass-card p-4 mb-4">
                     <div class="form-section-header">
                         <div class="bg-info text-white rounded-3 p-2 me-3">
-                            <i class="bi bi-calendar3 px-1"></i>
+                            <i class="bi bi-calendar3"></i>
                         </div>
-                        <h5 class="mb-0 fw-bold">Schedule & Bounds</h5>
+                        <h5 class="mb-0 fw-bold">Schedule & Capacity</h5>
                     </div>
 
                     <div class="row mb-4">
                         <div class="col-6">
-                            <label asp-for="StartDate" class="form-label-modern">Start Date</label>
-                            <input asp-for="StartDate" type="date" class="form-control form-control-custom ps-3" />
+                            <label asp-for="StartDate" class="form-label-modern"></label>
+                            <input asp-for="StartDate" class="form-control form-control-custom ps-3" />
+                            <span asp-validation-for="StartDate" class="text-danger"></span>
                         </div>
                         <div class="col-6">
-                            <label asp-for="EndDate" class="form-label-modern">End Date</label>
-                            <input asp-for="EndDate" type="date" class="form-control form-control-custom ps-3" />
+                            <label asp-for="EndDate" class="form-label-modern"></label>
+                            <input asp-for="EndDate" class="form-control form-control-custom ps-3" />
+                            <span asp-validation-for="EndDate" class="text-danger"></span>
                         </div>
-                    </div>
-
-                    <div class="duration-indicator mb-4">
-                        <div class="d-flex align-items-center text-primary">
-                            <i class="bi bi-info-circle-fill me-2"></i>
-                            <span class="small fw-bold">Timeline Status</span>
-                        </div>
-                        <p class="extra-small text-muted mt-1 mb-0" style="font-size: 0.75rem;">
-                            Ensure the end date is after the start date. System will automatically notify enrolled trainees of schedule updates.
-                        </p>
                     </div>
 
                     <div class="mb-2">
-                        <label asp-for="Capacity" class="form-label-modern">Enrollment Limit</label>
+                        <label asp-for="Capacity" class="form-label-modern"></label>
                         <div class="input-group">
                             <span class="input-group-text bg-light border-end-0 rounded-start-3" style="border: 1.5px solid #e2e8f0;">
                                 <i class="bi bi-people"></i>
                             </span>
                             <input asp-for="Capacity" class="form-control form-control-custom border-start-0" />
                         </div>
-                        <span asp-validation-for="Capacity" class="text-danger small"></span>
+                        <span asp-validation-for="Capacity" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="card border-danger border-opacity-10 bg-danger bg-opacity-10 rounded-4 p-4">
-                    <h6 class="text-danger fw-bold small mb-2"><i class="bi bi-exclamation-triangle me-2"></i>Danger Zone</h6>
-                    <p class="extra-small text-danger mb-0" style="font-size: 0.7rem; opacity: 0.8;">
-                        Reducing capacity below the current number of enrolled students may cause registration conflicts.
+                    <h6 class="text-danger fw-bold small mb-2"><i class="bi bi-exclamation-triangle me-2"></i>Warning</h6>
+                    <p class="text-danger mb-0" style="font-size: 0.75rem;">
+                        Updating dates will notify all @Model.Capacity potential trainees.
                     </p>
                 </div>
             </div>
         </div>
 
         <div class="d-flex justify-content-center mt-5">
-            <div class="sticky-save-bar d-flex align-items-center gap-3">
+            <div class="sticky-save-bar d-flex align-items-center gap-3 border">
                 <button type="submit" class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow">
-                    <i class="bi bi-check-lg me-2"></i> Update Program
+                    <i class="bi bi-check-lg me-2"></i> Save Changes
                 </button>
                 <div class="vr h-50 my-auto mx-1 text-muted"></div>
-                <a asp-action="Index" class="btn btn-link text-secondary text-decoration-none fw-bold small">Discard Changes</a>
+                <a asp-action="Index" class="btn btn-link text-secondary text-decoration-none fw-bold small">Cancel</a>
             </div>
         </div>
     </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @* Enable real-time validation without reloading the page *@
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // UX Enhancement: Automatically set minimum End Date based on Start Date
+        const startInput = document.querySelector('input[name="StartDate"]');
+        const endInput = document.querySelector('input[name="EndDate"]');
+
+        startInput.addEventListener('change', function() {
+            if (this.value) {
+                endInput.min = this.value;
+            }
+        });
+    </script>
 }

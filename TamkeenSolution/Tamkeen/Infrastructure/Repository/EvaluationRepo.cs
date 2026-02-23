@@ -47,7 +47,7 @@ namespace Tamkeen.Infrastructure.Repository
             throw new NotImplementedException();
         }
 
-        public void Update(Evaluation entity)
+        public Task Update(Evaluation entity)
         {
             throw new NotImplementedException();
         }

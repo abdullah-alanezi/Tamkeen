@@ -48,13 +48,18 @@ namespace Tamkeen.Controllers
         }
         [Authorize(Roles = "Admin,HR")]
         public async Task<IActionResult> Post(int id) {
-        
 
-           _postRepo.Post(id);
+            try
+            {
+                await _postRepo.PostAsync(id);
 
-           await _programRepo.MakePosted(id);
+                await _programRepo.MakePosted(id);
 
-            return RedirectToAction("Index");
+                TempData["SuccessMessage"] = "The Program Posted ";
+
+                return RedirectToAction("Index", "Programs");
+            }
+            catch (Exception ex) { TempData["ErrorMessage"] =" Failed Program Posting "; return RedirectToAction("Index", "Programs"); }
         }
         [Authorize(Roles = "Admin,HR")]
         public async Task<IActionResult> Details([FromRoute]int id) {
