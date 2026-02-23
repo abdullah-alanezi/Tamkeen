@@ -150,7 +150,7 @@ namespace Tamkeen.Controllers
 
             await _appRepo.UpdateStatus(id, status);
 
-            
+            TempData["SuccessMessage"] = "Status Updated successfully!";
             return RedirectToAction("ApplicationDetail", new {id=id});
         }
     }

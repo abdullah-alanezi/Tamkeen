@@ -73,10 +73,10 @@ namespace Tamkeen.Infrastructure.Repository
 
             if (trackedProgram != null)
             {
-                // نسخ القيم
+               
                 _context.Entry(trackedProgram).CurrentValues.SetValues(entity);
 
-                // أخبر EF ألا يقوم بتحديث هذا الحقل تحديداً
+                
                 _context.Entry(trackedProgram).Property(x => x.is_posted).IsModified = false;
 
                 await _context.SaveChangesAsync();

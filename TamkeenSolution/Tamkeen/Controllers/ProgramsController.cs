@@ -95,7 +95,7 @@ namespace Tamkeen.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken] // Security best practice
+        [ValidateAntiForgeryToken] 
         public async Task<IActionResult> Edit(TrainingProgramViewModel model)
         {
             if (!ModelState.IsValid)
@@ -107,7 +107,7 @@ namespace Tamkeen.Controllers
             {
                 var entity = new TrainingProgram
                 {
-                    Id = model.Id, // CRITICAL: You must include the ID
+                    Id = model.Id, 
                     Name = model.Name,
                     Description = model.Description,
                     StartDate = model.StartDate,
@@ -115,7 +115,7 @@ namespace Tamkeen.Controllers
                     Capacity = model.Capacity
                 };
 
-                // Use await for the update operation
+                
                 await _programRepo.Update(entity);
 
                 TempData["SuccessMessage"] = "Program Updated successfully!";
