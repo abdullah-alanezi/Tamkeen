@@ -2,7 +2,7 @@
 @model TrainingProgramViewModel
 
 @{
-    ViewData["Title"] = "Edit Program Settings";
+    ViewData["Title"] = "تعديل إعدادات البرنامج";
 }
 
 <style>
@@ -32,94 +32,102 @@
         color: #475569;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.6rem;
+        display: block;
     }
 
     .input-wrapper {
         position: relative;
     }
 
+        /* ضبط الأيقونة لجهة اليمين في RTL */
         .input-wrapper i {
             position: absolute;
-            left: 1rem;
-            top: 1rem;
+            right: 1rem;
+            top: 0.85rem;
             color: #94a3b8;
+            font-size: 1.1rem;
         }
 
     .form-control-custom {
-        padding: 0.75rem 1rem 0.75rem 2.8rem;
-        border-radius: 0.75rem;
+        padding: 0.75rem 2.8rem 0.75rem 1rem; /* مساحة للأيقونة من اليمين */
+        border-radius: 0.85rem;
         border: 1.5px solid #e2e8f0;
         background-color: #f8fafc;
         transition: all 0.2s;
+        text-align: right;
     }
 
         .form-control-custom:focus {
             background-color: #fff;
-            border-color: #4e73df;
-            box-shadow: 0 0 0 4px rgba(78, 115, 223, 0.1);
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.08);
         }
 
+    /* شريط الحفظ العائم */
     .sticky-save-bar {
         position: sticky;
         bottom: 1.5rem;
         z-index: 1000;
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(8px);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
         border-radius: 100px;
-        padding: 0.75rem 1.5rem;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        padding: 0.85rem 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        border: 1px solid #e2e8f0;
     }
-    /* Style for validation messages to look better with your theme */
+
     .field-validation-error {
         font-size: 0.8rem;
         font-weight: 600;
-        margin-top: 4px;
+        margin-top: 5px;
+        color: #dc3545;
         display: block;
     }
 </style>
 
-<div class="container py-5 edit-container">
-    <div class="d-flex align-items-center justify-content-between mb-4">
+<div class="container py-5 edit-container text-end">
+    <div class="d-flex align-items-center justify-content-between mb-5 flex-wrap gap-3">
         <div>
-            <h2 class="fw-bold text-dark mb-1">Edit Program Settings</h2>
-            <p class="text-muted mb-0">Modify configuration for <strong>@Model.Name</strong></p>
+            <h2 class="fw-bold text-dark mb-1">تعديل إعدادات البرنامج</h2>
+            <p class="text-muted mb-0">تحديث البيانات الخاصة بـ: <strong class="text-primary">@Model.Name</strong></p>
         </div>
-        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-light rounded-pill px-4 border">
-            <i class="bi bi-eye me-2"></i>View Details
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-white rounded-pill px-4 border shadow-sm">
+            <i class="bi bi-eye ms-2"></i>عرض التفاصيل
         </a>
     </div>
 
-    @* Client-side validation summary for logic errors (like EndDate < StartDate) *@
-    <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-4 shadow-sm mb-4"></div>
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-4 shadow-sm mb-4 border-0"></div>
+    }
 
     <form asp-action="Edit" method="post">
-        @* This hidden input is the most important part to make Update work! *@
         <input type="hidden" asp-for="Id" />
 
         <div class="row g-4">
             <div class="col-lg-7">
                 <div class="glass-card p-4 p-md-5">
                     <div class="form-section-header">
-                        <div class="bg-primary text-white rounded-3 p-2 me-3">
+                        <div class="bg-primary text-white rounded-3 p-2 ms-3">
                             <i class="bi bi-pencil-square"></i>
                         </div>
-                        <h5 class="mb-0 fw-bold">Program Content</h5>
+                        <h5 class="mb-0 fw-bold">محتوى البرنامج</h5>
                     </div>
 
                     <div class="mb-4">
-                        <label asp-for="Name" class="form-label-modern"></label>
+                        <label asp-for="Name" class="form-label-modern">اسم البرنامج</label>
                         <div class="input-wrapper">
                             <i class="bi bi-tag"></i>
-                            <input asp-for="Name" class="form-control form-control-custom" placeholder="Program Title" />
+                            <input asp-for="Name" class="form-control form-control-custom" placeholder="مثال: تطوير تطبيقات الويب" />
                         </div>
-                        <span asp-validation-for="Name" class="text-danger"></span>
+                        <span asp-validation-for="Name"></span>
                     </div>
 
                     <div class="mb-0">
-                        <label asp-for="Description" class="form-label-modern"></label>
-                        <textarea asp-for="Description" class="form-control form-control-custom ps-3" rows="8"></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
+                        <label asp-for="Description" class="form-label-modern">وصف البرنامج</label>
+                        <textarea asp-for="Description" class="form-control form-control-custom ps-3 pe-3" rows="8" placeholder="أدخل تفاصيل البرنامج هنا..."></textarea>
+                        <span asp-validation-for="Description"></span>
                     </div>
                 </div>
             </div>
@@ -127,66 +135,65 @@
             <div class="col-lg-5">
                 <div class="glass-card p-4 mb-4">
                     <div class="form-section-header">
-                        <div class="bg-info text-white rounded-3 p-2 me-3">
+                        <div class="bg-info text-white rounded-3 p-2 ms-3">
                             <i class="bi bi-calendar3"></i>
                         </div>
-                        <h5 class="mb-0 fw-bold">Schedule & Capacity</h5>
+                        <h5 class="mb-0 fw-bold">الجدول والسعة</h5>
                     </div>
 
                     <div class="row mb-4">
                         <div class="col-6">
-                            <label asp-for="StartDate" class="form-label-modern"></label>
-                            <input asp-for="StartDate" class="form-control form-control-custom ps-3" />
-                            <span asp-validation-for="StartDate" class="text-danger"></span>
+                            <label asp-for="StartDate" class="form-label-modern">تاريخ البدء</label>
+                            <input asp-for="StartDate" type="date" class="form-control form-control-custom ps-3 pe-3" />
+                            <span asp-validation-for="StartDate"></span>
                         </div>
                         <div class="col-6">
-                            <label asp-for="EndDate" class="form-label-modern"></label>
-                            <input asp-for="EndDate" class="form-control form-control-custom ps-3" />
-                            <span asp-validation-for="EndDate" class="text-danger"></span>
+                            <label asp-for="EndDate" class="form-label-modern">تاريخ الانتهاء</label>
+                            <input asp-for="EndDate" type="date" class="form-control form-control-custom ps-3 pe-3" />
+                            <span asp-validation-for="EndDate"></span>
                         </div>
                     </div>
 
                     <div class="mb-2">
-                        <label asp-for="Capacity" class="form-label-modern"></label>
+                        <label asp-for="Capacity" class="form-label-modern">الطاقة الاستيعابية</label>
                         <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0 rounded-start-3" style="border: 1.5px solid #e2e8f0;">
+                            <span class="input-group-text bg-light border-start-0 rounded-end-3" style="border: 1.5px solid #e2e8f0;">
                                 <i class="bi bi-people"></i>
                             </span>
-                            <input asp-for="Capacity" class="form-control form-control-custom border-start-0" />
+                            <input asp-for="Capacity" class="form-control form-control-custom border-end-0" />
                         </div>
-                        <span asp-validation-for="Capacity" class="text-danger"></span>
+                        <span asp-validation-for="Capacity"></span>
                     </div>
                 </div>
 
-                <div class="card border-danger border-opacity-10 bg-danger bg-opacity-10 rounded-4 p-4">
-                    <h6 class="text-danger fw-bold small mb-2"><i class="bi bi-exclamation-triangle me-2"></i>Warning</h6>
-                    <p class="text-danger mb-0" style="font-size: 0.75rem;">
-                        Updating dates will notify all @Model.Capacity potential trainees.
+                <div class="card border-0 bg-warning bg-opacity-10 rounded-4 p-4">
+                    <h6 class="text-warning-emphasis fw-bold small mb-2"><i class="bi bi-exclamation-triangle ms-2"></i>تنبيه هيدروليكي</h6>
+                    <p class="text-muted mb-0 lh-base" style="font-size: 0.8rem;">
+                        تغيير التواريخ قد يؤثر على طلبات الانضمام الحالية. سيتم إخطار المتدربين المسجلين بأي تحديثات تطرأ على الجدول الزمني.
                     </p>
                 </div>
             </div>
         </div>
 
         <div class="d-flex justify-content-center mt-5">
-            <div class="sticky-save-bar d-flex align-items-center gap-3 border">
+            <div class="sticky-save-bar d-flex align-items-center gap-3">
                 <button type="submit" class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow">
-                    <i class="bi bi-check-lg me-2"></i> Save Changes
+                    <i class="bi bi-check-lg ms-2"></i> حفظ التغييرات
                 </button>
-                <div class="vr h-50 my-auto mx-1 text-muted"></div>
-                <a asp-action="Index" class="btn btn-link text-secondary text-decoration-none fw-bold small">Cancel</a>
+                <div class="vr h-50 my-auto mx-1 text-muted opacity-25"></div>
+                <a asp-action="Index" class="btn btn-link text-secondary text-decoration-none fw-bold small px-3">إلغاء</a>
             </div>
         </div>
     </form>
 </div>
 
 @section Scripts {
-    @* Enable real-time validation without reloading the page *@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
     <script>
-        // UX Enhancement: Automatically set minimum End Date based on Start Date
+        // تحسين تجربة المستخدم: تعيين الحد الأدنى لتاريخ الانتهاء بناءً على تاريخ البدء
         const startInput = document.querySelector('input[name="StartDate"]');
         const endInput = document.querySelector('input[name="EndDate"]');
 

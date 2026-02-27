@@ -1,37 +1,39 @@
 ﻿@model List<Tamkeen.Domain.Entities.ProgramPost>
 
 @{
-     Layout = "_AuthLayout"; 
+    ViewData["Title"] = "الفرص المتاحة";
+    Layout = "_AuthLayout";
 }
-<div class="container py-5">
+
+<div class="container py-5 text-end">
     <div class="text-center mb-5">
-        <h2 class="fw-bold">Available Training Programs</h2>
-        <p class="text-muted">Select a program below to start your professional journey.</p>
+        <h2 class="fw-bold text-dark">برامج التدريب المتاحة</h2>
+        <p class="text-muted">اختر البرنامج المناسب لتبدأ رحلتك المهنية معنا</p>
     </div>
 
     <div class="row g-4">
         @foreach (var post in Model.Where(p => p.trainingProgram.is_posted))
         {
             <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm hover-shadow transition">
-                    <div class="card-body p-4">
+                <div class="card h-100 border-0 shadow-sm hover-shadow transition-all rounded-4">
+                    <div class="card-body p-4 d-flex flex-column">
                         <div class="d-flex justify-content-between mb-3">
-                            <span class="badge bg-primary-soft text-primary">
-                                <i class="bi bi-person-badge me-1"></i> @post.trainingProgram.Capacity Seats
+                            <span class="badge bg-primary-soft text-primary rounded-pill px-3 py-2">
+                                <i class="bi bi-people-fill ms-1"></i> @post.trainingProgram.Capacity مقاعد
                             </span>
                             <span class="text-muted small">
-                                <i class="bi bi-calendar3 me-1"></i> @post.trainingProgram.StartDate.ToString("MMM dd")
+                                <i class="bi bi-calendar-event ms-1"></i> @post.trainingProgram.StartDate.ToString("dd MMM")
                             </span>
                         </div>
-                        
+
                         <h5 class="card-title fw-bold text-dark mb-3">@post.trainingProgram.Name</h5>
                         <p class="card-text text-secondary mb-4 text-truncate-3">
                             @post.trainingProgram.Description
                         </p>
-                        
+
                         <div class="mt-auto">
-                            <a asp-action="Apply" asp-route-id="@post.Id" class="btn btn-outline-primary w-100 rounded-pill">
-                                View Details & Apply
+                            <a asp-action="Apply" asp-route-id="@post.Id" class="btn btn-primary w-100 rounded-pill py-2 shadow-sm fw-bold">
+                                عرض التفاصيل والتقديم
                             </a>
                         </div>
                     </div>
@@ -42,7 +44,33 @@
 </div>
 
 <style>
-    .hover-shadow:hover { transform: translateY(-5px); transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
-    .text-truncate-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    .bg-primary-soft { background-color: #e7f0ff; }
+    /* تحسينات التصميم داخل القالب */
+    .hover-shadow:hover {
+        transform: translateY(-5px);
+        transition: 0.3s;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+    }
+
+    .text-truncate-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.6;
+        min-height: 4.8em;
+    }
+
+    .bg-primary-soft {
+        background-color: #eef2ff;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #4338ca 0%, #2563eb 100%);
+            transform: scale(1.02);
+        }
 </style>

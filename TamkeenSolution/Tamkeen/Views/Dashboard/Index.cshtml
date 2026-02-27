@@ -1,36 +1,208 @@
 ﻿@{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "نظرة عامة على النظام";
 }
 
-<h2 class="mb-4">Dashboard Overview</h2>
-
-<div class="row">
-
-    <div class="col-md-4">
-        <div class="card bg-primary text-white">
-            <div class="card-body">
-                <h5>Total Trainees</h5>
-                <h3>0</h3>
-            </div>
-        </div>
+<div class="d-flex align-items-center justify-content-between mb-5">
+    <div>
+        <h2 class="fw-bold text-dark mb-1">مرحباً بك، أحمد علي 👋</h2>
+        <p class="text-muted mb-0">إليك آخر تحديثات منصة تمكين اليوم.</p>
     </div>
-
-    <div class="col-md-4">
-        <div class="card bg-success text-white">
-            <div class="card-body">
-                <h5>Total Programs</h5>
-                <h3>0</h3>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card bg-warning text-dark">
-            <div class="card-body">
-                <h5>Total Applications</h5>
-                <h3>0</h3>
-            </div>
-        </div>
-    </div>
-
+    <button class="btn btn-primary rounded-pill px-4 shadow-sm">
+        <i class="bi bi-plus-lg ms-2"></i> برنامج جديد
+    </button>
 </div>
+
+<div class="row g-4 mb-5">
+    <div class="col-xl-4 col-md-6">
+        <div class="card card-custom border-0 shadow-sm h-100 overflow-hidden">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <p class="text-muted fw-medium mb-1">إجمالي المتدربين</p>
+                        <h2 class="fw-bold mb-0">1,284</h2>
+                        <span class="text-success small fw-bold mt-2 d-block">
+                            <i class="bi bi-arrow-up-short"></i> +12% منذ الشهر الماضي
+                        </span>
+                    </div>
+                    <div class="stats-icon bg-soft-primary">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="progress" style="height: 4px;">
+                <div class="progress-bar bg-primary" style="width: 70%"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6">
+        <div class="card card-custom border-0 shadow-sm h-100 overflow-hidden">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <p class="text-muted fw-medium mb-1">البرامج النشطة</p>
+                        <h2 class="fw-bold mb-0">42</h2>
+                        <span class="text-primary small fw-bold mt-2 d-block">
+                            8 برامج قيد الانطلاق
+                        </span>
+                    </div>
+                    <div class="stats-icon bg-soft-emerald">
+                        <i class="bi bi-journal-code text-emerald-600"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="progress" style="height: 4px;">
+                <div class="progress-bar bg-emerald-500" style="width: 45%"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6">
+        <div class="card card-custom border-0 shadow-sm h-100 overflow-hidden">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <p class="text-muted fw-medium mb-1">طلبات الانضمام</p>
+                        <h2 class="fw-bold mb-0">156</h2>
+                        <span class="text-danger small fw-bold mt-2 d-block">
+                            <i class="bi bi-clock-history"></i> 12 طلب بانتظار المراجعة
+                        </span>
+                    </div>
+                    <div class="stats-icon bg-soft-warning">
+                        <i class="bi bi-inbox-fill text-warning"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="progress" style="height: 4px;">
+                <div class="progress-bar bg-warning" style="width: 30%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card card-custom border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0 pt-4 px-4">
+                <h5 class="fw-bold mb-0 text-dark text-end">أحدث المسجلين</h5>
+            </div>
+            <div class="card-body px-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 text-end">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="border-0 px-4">المتدرب</th>
+                                <th class="border-0">البرنامج</th>
+                                <th class="border-0">التاريخ</th>
+                                <th class="border-0">الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="px-4">
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://ui-avatars.com/api/?name=S+A&background=random" class="rounded-circle ms-3" width="35">
+                                        <div class="fw-bold">سارة أحمد</div>
+                                    </div>
+                                </td>
+                                <td>تطوير Frontend</td>
+                                <td class="text-muted small">منذ 10 دقائق</td>
+                                <td><span class="badge bg-soft-success text-success rounded-pill">مكتمل</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-4">
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://ui-avatars.com/api/?name=M+K&background=random" class="rounded-circle ms-3" width="35">
+                                        <div class="fw-bold">محمد خالد</div>
+                                    </div>
+                                </td>
+                                <td>إدارة المشاريع</td>
+                                <td class="text-muted small">منذ ساعتين</td>
+                                <td><span class="badge bg-soft-warning text-warning rounded-pill">قيد الانتظار</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card card-custom border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0 pt-4 px-4">
+                <h5 class="fw-bold mb-0 text-dark text-end">تحديثات المنصة</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="timeline-simple">
+                    <div class="mb-4 position-relative ps-4 border-start border-2 ms-2">
+                        <div class="timeline-dot bg-primary"></div>
+                        <h6 class="fw-bold mb-1">انطلاق برنامج التمكين التقني</h6>
+                        <p class="text-muted small">تم قبول 50 متدرباً جديداً في قسم البرمجة.</p>
+                    </div>
+                    <div class="mb-0 position-relative ps-4 border-start border-2 ms-2">
+                        <div class="timeline-dot bg-success"></div>
+                        <h6 class="fw-bold mb-1">تحديث معايير التقييم</h6>
+                        <p class="text-muted small">تم إضافة نظام التقييم 360 درجة لجميع المسارات.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* تصاميم خاصة بالداشبورد */
+    .bg-soft-primary {
+        background: #e0e7ff;
+        color: #4338ca;
+    }
+
+    .bg-soft-emerald {
+        background: #d1fae5;
+        color: #059669;
+    }
+
+    .bg-soft-warning {
+        background: #fef3c7;
+        color: #d97706;
+    }
+
+    .bg-soft-success {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .stats-icon {
+        width: 54px;
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        font-size: 1.5rem;
+    }
+
+    .bg-emerald-500 {
+        background-color: #10b981;
+    }
+
+    .text-emerald-600 {
+        color: #059669;
+    }
+
+    .timeline-dot {
+        position: absolute;
+        right: -7px;
+        top: 4px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+    }
+
+    .table thead th {
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+        color: #64748b;
+    }
+</style>

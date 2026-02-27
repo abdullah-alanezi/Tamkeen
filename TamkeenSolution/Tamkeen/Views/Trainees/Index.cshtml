@@ -1,73 +1,84 @@
 ﻿@model List<Tamkeen.Domain.Entities.Trainee>
 
 @{
-    ViewData["Title"] = "Trainees Management";
+    ViewData["Title"] = "إدارة المتدربين";
 }
 
 <style>
     :root {
         --glass-bg: rgba(255, 255, 255, 0.95);
-        --border-radius-lg: 1rem;
+        --border-radius-lg: 1.25rem;
     }
 
     body {
-        background-color: #f8f9fc;
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background-color: #f8fafc;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     .dashboard-card {
         background: var(--glass-bg);
-        border: none;
+        border: 1px solid #edf2f7;
         border-radius: var(--border-radius-lg);
-        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-        transition: transform 0.2s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
 
     .table-hover tbody tr:hover {
-        background-color: rgba(13, 110, 253, 0.04);
-        cursor: pointer;
+        background-color: #f1f5f9;
+        transition: background-color 0.2s ease;
     }
 
     .badge-status {
-        font-weight: 600;
-        padding: 0.5em 0.8em;
+        font-weight: 700;
+        padding: 0.5em 1em;
         font-size: 0.75rem;
+        border-radius: 50px;
     }
 
+    /* تنسيق شريط البحث للعربية */
     .search-group .form-control {
-        border-radius: 20px 0 0 20px;
-        padding-left: 1.5rem;
+        border-radius: 0 25px 25px 0;
+        padding-right: 1.5rem;
+        border-left: 0;
     }
 
     .search-group .btn {
-        border-radius: 0 20px 20px 0;
-        padding-right: 1.5rem;
+        border-radius: 25px 0 0 25px;
+        padding-left: 1.5rem;
+        border-right: 0;
     }
 
     .btn-pill {
         border-radius: 50px;
-        padding: 0.5rem 1.25rem;
-        font-size: 0.875rem;
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
     }
 
-    .empty-state {
-        padding: 5rem 1rem;
-        text-align: center;
+    .avatar-circle {
+        width: 42px;
+        height: 42px;
+        background: #e2e8f0;
+        color: #475569;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 0.9rem;
     }
 </style>
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-4 text-end">
     <div class="row align-items-center mb-4">
         <div class="col-md-6">
-            <h2 class="fw-bold text-dark mb-1">Trainees Management</h2>
-            <p class="text-muted mb-0">Manage and monitor trainee information across all departments</p>
+            <h2 class="fw-bold text-dark mb-1">إدارة المتدربين</h2>
+            <p class="text-muted mb-0">إدارة ومراقبة بيانات المتدربين عبر جميع الأقسام والبرامج</p>
         </div>
-        <div class="col-md-6 text-md-end mt-3 mt-md-0">
+        <div class="col-md-6 text-md-start mt-3 mt-md-0">
             <a asp-action="Create" class="btn btn-primary btn-pill shadow-sm">
-                <i class="bi bi-plus-lg"></i> Create New Trainee
+                <i class="bi bi-person-plus ms-1"></i> إضافة متدرب جديد
             </a>
         </div>
     </div>
@@ -76,18 +87,20 @@
         <div class="row g-3">
             <div class="col-md-4">
                 <div class="input-group search-group">
-                    <input type="text" class="form-control border-end-0" placeholder="Search by name or university..." aria-label="Search">
-                    <button class="btn btn-outline-secondary border-start-0" type="button">
+                    <input type="text" class="form-control" placeholder="ابحث بالاسم أو الجامعة..." aria-label="Search">
+                    <button class="btn btn-primary" type="button">
                         <i class="bi bi-search"></i>
                     </button>
                 </div>
             </div>
             <div class="col-md-3">
-                <select class="form-select rounded-pill">
-                    <option selected>All Statuses</option>
-                    <option>Active</option>
-                    <option>Inactive</option>
-                    <option>Pending</option>
+                <select class="form-select rounded-pill border-light shadow-sm fw-bold text-secondary" style="font-size: 0.9rem;">
+                    <option value="" selected>🔍 جميع الحالات</option>
+                    <option value="1">متقدم جديد (Applicant)</option>
+                    <option value="2">نشط حالياً (Active)</option>
+                    <option value="3">أتم البرنامج (Completed)</option>
+                    <option value="4">موقوف مؤقتاً (Suspended)</option>
+                    <option value="5">مرفوض (Rejected)</option>
                 </select>
             </div>
         </div>
@@ -96,13 +109,13 @@
     <div class="dashboard-card shadow-sm overflow-hidden">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
-                <thead class="bg-light">
+                <thead class="bg-light border-bottom">
                     <tr>
-                        <th class="ps-4 border-0 text-uppercase text-secondary small fw-bolder">Trainee Name</th>
-                        <th class="border-0 text-uppercase text-secondary small fw-bolder">University</th>
-                        <th class="border-0 text-uppercase text-secondary small fw-bolder">GPA</th>
-                        <th class="border-0 text-uppercase text-secondary small fw-bolder">Status</th>
-                        <th class="border-0 text-uppercase text-secondary small fw-bolder text-end pe-4">Actions</th>
+                        <th class="pr-4 border-0 text-secondary small fw-bold py-3" style="padding-right: 1.5rem;">اسم المتدرب</th>
+                        <th class="border-0 text-secondary small fw-bold py-3">الجامعة</th>
+                        <th class="border-0 text-secondary small fw-bold py-3">المعدل (GPA)</th>
+                        <th class="border-0 text-secondary small fw-bold py-3">الحالة</th>
+                        <th class="border-0 text-secondary small fw-bold py-3 text-start pl-4" style="padding-left: 1.5rem;">إجراءات</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,44 +124,54 @@
                         @foreach (var trainee in Model)
                         {
                             <tr>
-                                <td class="ps-4">
+                                <td style="padding-right: 1.5rem;">
                                     <div class="d-flex align-items-center">
-                                        <div class="avatar-sm me-3 bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                        <div class="avatar-circle ms-3 bg-primary text-white">
                                             @trainee.User.FullName.Substring(0, 1)
                                         </div>
-                                        <div class="fw-bold text-dark">@trainee.User.FullName</div>
+                                        <div>
+                                            <div class="fw-bold text-dark">@trainee.User.FullName</div>
+                                            <div class="small text-muted">@trainee.User.UserInfo.Email</div>
+                                        </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="text-muted"><i class="bi bi-bank me-1"></i> @trainee.University</span>
+                                    <span class="text-muted"><i class="bi bi-mortarboard ms-1"></i> @trainee.University</span>
                                 </td>
                                 <td>
-                                    <span class="fw-medium text-dark">@trainee.GPA</span>
+                                    <span class="fw-bold text-dark">@trainee.GPA</span>
                                 </td>
                                 <td>
                                     @{
-                                        var statusClass = trainee.Status.ToString().ToLower() switch
+                                        // بناءً على Enum TraineeStatus المحدث
+                                        var (statusLabel, statusClass) = trainee.Status switch
                                         {
-                                            "active" => "bg-success-subtle text-success",
-                                            "inactive" => "bg-secondary-subtle text-secondary",
-                                            "pending" => "bg-warning-subtle text-warning",
-                                            _ => "bg-light text-dark"
+                                            Tamkeen.Domain.Enums.TraineeStatus.Applicant => ("متقدم جديد", "bg-primary-subtle text-primary"),
+                                            Tamkeen.Domain.Enums.TraineeStatus.Active => ("نشط حالياً", "bg-success-subtle text-success"),
+                                            Tamkeen.Domain.Enums.TraineeStatus.Completed => ("أتم البرنامج", "bg-info-subtle text-info"),
+                                            Tamkeen.Domain.Enums.TraineeStatus.Suspended => ("موقوف مؤقتاً", "bg-warning-subtle text-warning"),
+                                            Tamkeen.Domain.Enums.TraineeStatus.Rejected => ("مرفوض", "bg-danger-subtle text-danger"),
+                                            _ => ("غير محدد", "bg-light text-dark")
                                         };
                                     }
-                                    <span class="badge rounded-pill badge-status @statusClass">
-                                        @trainee.Status
+
+                                    <span class="badge badge-status @statusClass shadow-sm border">
+                                        <i class="bi bi-circle-fill ms-1" style="font-size: 0.5rem;"></i> @statusLabel
+                                    </span>
+                                    <span class="badge badge-status @statusClass">
+                                        @statusLabel
                                     </span>
                                 </td>
-                                <td class="text-end pe-4">
-                                    <div class="btn-group shadow-sm rounded-pill bg-white">
-                                        <a asp-action="Details" asp-route-id="@trainee.Id" class="btn btn-outline-light text-primary border-0 btn-sm px-3" title="Details">
-                                            <i class="bi bi-eye"></i>
+                                <td class="text-start" style="padding-left: 1.5rem;">
+                                    <div class="btn-group bg-white border rounded-pill p-1">
+                                        <a asp-action="Details" asp-route-id="@trainee.Id" class="btn btn-link btn-sm text-primary px-2" title="عرض التفاصيل">
+                                            <i class="bi bi-eye-fill"></i>
                                         </a>
-                                        <a asp-action="Edit" asp-route-id="@trainee.Id" class="btn btn-outline-light text-warning border-0 btn-sm px-3" title="Edit">
+                                        <a asp-action="Edit" asp-route-id="@trainee.Id" class="btn btn-link btn-sm text-warning px-2" title="تعديل">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <button type="button" class="btn btn-outline-light text-danger border-0 btn-sm px-3" title="Deactivate">
-                                            <i class="bi bi-person-x"></i>
+                                        <button type="button" class="btn btn-link btn-sm text-danger px-2" title="إلغاء التنشيط">
+                                            <i class="bi bi-person-x-fill"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -158,11 +181,11 @@
                     else
                     {
                         <tr>
-                            <td colspan="5">
-                                <div class="empty-state">
-                                    <i class="bi bi-people text-muted display-4"></i>
-                                    <h5 class="mt-3 text-muted">No trainees found</h5>
-                                    <p class="small text-secondary">Try adjusting your filters or add a new trainee to get started.</p>
+                            <td colspan="5" class="py-5 text-center">
+                                <div class="text-muted">
+                                    <i class="bi bi-people display-4 opacity-25"></i>
+                                    <h5 class="mt-3">لا يوجد متدربون حالياً</h5>
+                                    <p class="small">ابدأ بإضافة أول متدرب إلى النظام عبر الزر أعلاه.</p>
                                 </div>
                             </td>
                         </tr>
@@ -171,18 +194,18 @@
             </table>
         </div>
 
-        <div class="card-footer bg-white border-0 py-3">
+        <div class="card-footer bg-white border-top-0 py-3">
             <div class="row align-items-center">
-                <div class="col-sm-6 text-center text-sm-start">
-                    <span class="text-muted small">Showing 1 to @Model.Count of @Model.Count entries</span>
+                <div class="col-sm-6 text-center text-sm-end">
+                    <span class="text-muted small">عرض 1 إلى @Model?.Count من أصل @Model?.Count مدخلات</span>
                 </div>
                 <div class="col-sm-6 mt-3 mt-sm-0">
-                    <nav aria-label="Table navigation">
-                        <ul class="pagination pagination-sm justify-content-center justify-content-sm-end mb-0">
-                            <li class="page-item disabled"><a class="page-link border-0 rounded-circle mx-1" href="#"><i class="bi bi-chevron-left"></i></a></li>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm justify-content-center justify-content-sm-start mb-0">
+                            <li class="page-item disabled"><a class="page-link border-0 rounded-circle mx-1" href="#"><i class="bi bi-chevron-right"></i></a></li>
                             <li class="page-item active"><a class="page-link border-0 rounded-circle mx-1" href="#">1</a></li>
                             <li class="page-item"><a class="page-link border-0 rounded-circle mx-1" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link border-0 rounded-circle mx-1" href="#"><i class="bi bi-chevron-right"></i></a></li>
+                            <li class="page-item"><a class="page-link border-0 rounded-circle mx-1" href="#"><i class="bi bi-chevron-left"></i></a></li>
                         </ul>
                     </nav>
                 </div>

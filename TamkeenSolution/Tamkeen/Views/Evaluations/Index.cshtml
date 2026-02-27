@@ -1,25 +1,117 @@
 ﻿@model List<Tamkeen.Domain.Entities.Evaluation>
 
-<h2>Evaluations</h2>
+@{
+    ViewData["Title"] = "سجل التقييمات";
+}
 
-<a asp-action="Create" class="btn btn-primary mb-3">Add Evaluation</a>
+<div class="container py-4 text-end">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-dark">سجل تقييمات المتدربين</h2>
+            <p class="text-muted">متابعة الأداء الدوري، النهائي، والمهام للمتدربين</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary rounded-pill px-4 shadow-sm">
+            <i class="bi bi-plus-lg ms-2"></i>إضافة تقييم جديد
+        </a>
+    </div>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Enrollment Id</th>
-            <th>Score</th>
-            <th>Type</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var eval in Model)
-        {
-            <tr>
-                <td>@eval.EnrollmentId</td>
-                <td>@eval.Score</td>
-                <td>@eval.Type</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr class="small text-muted">
+                        <th class="py-3 pr-4" style="padding-right: 1.5rem;">المتدرب</th>
+                        <th class="py-3">نوع التقييم</th>
+                        <th class="py-3">الدرجة (100)</th>
+                        <th class="py-3">الحالة التقديرية</th>
+                        <th class="py-3">ملاحظات</th>
+                        <th class="py-3 text-center">الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var eval in Model)
+                    {
+                        <tr>
+                            <td style="padding-right: 1.5rem;">
+                                <div class="fw-bold text-dark">@eval.Enrollment?.Trainee?.User?.FullName</div>
+                                <small class="text-muted">كود التسجيل: #@eval.EnrollmentId</small>
+                            </td>
+                            <td>
+                                @{
+                                    var (typeAr, typeIcon, typeClass) = eval.Type switch
+                                    {
+                                        Tamkeen.Domain.Enums.EvaluationType.Monthly => ("تقييم شهري", "bi-calendar-event", "text-primary"),
+                                        Tamkeen.Domain.Enums.EvaluationType.Final => ("تقييم نهائي", "bi-trophy", "text-danger"),
+                                        Tamkeen.Domain.Enums.EvaluationType.TaskBased => ("تقييم مهمة", "bi-list-check", "text-info"),
+                                        _ => ("غير محدد", "bi-question", "text-secondary")
+                                    };
+                                }
+                                <span class="fw-medium @typeClass">
+                                    <i class="bi @typeIcon ms-1"></i> @typeAr
+                                </span>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1 ms-3" style="height: 8px; direction: ltr;">
+                                        @{
+                                            var progressClass = eval.Score >= 80 ? "bg-success" : (eval.Score >= 50 ? "bg-warning" : "bg-danger");
+                                        }
+                                        <div class="progress-bar @progressClass" role="progressbar" style="width: @eval.Score%"></div>
+                                    </div>
+                                    <span class="fw-bold">@eval.Score%</span>
+                                </div>
+                            </td>
+                            <td>
+                                @if (eval.Score >= 90)
+                                {
+                                    <span class="badge bg-success-subtle text-success">ممتاز</span>
+                                }
+                                else if (eval.Score >= 75)
+                                {
+
+                                    <span class="badge bg-info-subtle text-info">جيد جداً</span>
+                                }
+                                else if (eval.Score >= 50)
+                                {
+
+                                    <span class="badge bg-warning-subtle text-warning">مقبول</span>
+                                }
+                                else
+                                {
+
+                                    <span class="badge bg-danger-subtle text-danger">ضعيف</span>
+                                }
+                            </td>
+                            <td>
+                                <small class="text-muted text-truncate d-inline-block" style="max-width: 150px;" title="@eval.Feedback">
+                                    @(string.IsNullOrEmpty(eval.Feedback) ? "لا توجد ملاحظات" : eval.Feedback)
+                                </small>
+                            </td>
+                            <td class="text-center">
+                                <a asp-action="Details" asp-route-id="@eval.Id" class="btn btn-sm btn-light border rounded-circle">
+                                    <i class="bi bi-eye text-primary"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .progress {
+        background-color: #e9ecef;
+        border-radius: 10px;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f8faff;
+    }
+
+    .badge {
+        font-weight: 600;
+        padding: 0.5em 1em;
+    }
+</style>

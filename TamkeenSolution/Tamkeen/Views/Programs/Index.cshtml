@@ -1,84 +1,102 @@
 ﻿@model List<Tamkeen.Domain.Entities.TrainingProgram>
 
 @{
-    ViewData["Title"] = "Training Programs";
+    ViewData["Title"] = "البرامج التدريبية";
 }
 
-
-
 <div class="container-fluid py-4">
-    <div class="row align-items-center mb-4">
-        <div class="col-md-6">
-            <h2 class="fw-bold text-dark mb-1">Training Programs</h2>
-            <p class="text-muted mb-0">Manage, monitor, and publish your educational tracks.</p>
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+        <div>
+            <h2 class="fw-bold text-dark mb-1">البرامج التدريبية</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-muted small">الرئيسية</a></li>
+                    <li class="breadcrumb-item active small text-primary fw-bold" aria-current="page">إدارة البرامج</li>
+                </ol>
+            </nav>
         </div>
-        <div class="col-md-6 text-md-end mt-3 mt-md-0">
-            <a asp-action="Create" class="btn btn-primary btn-action shadow-sm">
-                <i class="bi bi-plus-lg"></i> Create Program
+        <div class="d-flex gap-2">
+            <div class="bg-white px-3 py-2 rounded-3 border shadow-sm d-flex align-items-center">
+                <span class="text-muted small ms-2">إجمالي البرامج:</span>
+                <span class="fw-bold text-primary">@(Model?.Count ?? 0)</span>
+            </div>
+            <a asp-action="Create" class="btn btn-primary rounded-pill px-4 shadow-sm d-flex align-items-center">
+                <i class="bi bi-plus-lg ms-2"></i> إنشاء برنامج جديد
             </a>
         </div>
     </div>
 
-    <div class="card card-custom">
+    <div class="card card-custom border-0 shadow-sm overflow-hidden">
         <div class="card-body p-0">
             @if (Model != null && Model.Any())
             {
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0">
-                        <thead>
-                            <tr>
-                                <th>Program Name</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Capacity</th>
-                                <th class="text-end">Actions</th>
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr class="text-muted small text-uppercase">
+                                <th class="ps-4 py-3 border-0">اسم البرنامج</th>
+                                <th class="border-0">تاريخ البدء</th>
+                                <th class="border-0">تاريخ الانتهاء</th>
+                                <th class="border-0 text-center">الطاقة الاستيعابية</th>
+                                <th class="border-0 text-center">الحالة</th>
+                                <th class="pe-4 py-3 border-0 text-start">الإجراءات</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var program in Model)
                             {
                                 <tr>
-                                    <td>
-                                        <span class="fw-semibold text-dark">@program.Name</span>
-                                    </td>
-                                    <td>
+                                    <td class="ps-4">
                                         <div class="d-flex align-items-center">
-                                            <i class="bi bi-calendar3 text-muted me-2"></i>
-                                            @program.StartDate.ToShortDateString()
+                                            <div class="program-avatar ms-3">
+                                                <i class="bi bi-code-square fs-4 text-primary"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold text-dark">@program.Name</div>
+                                                <small class="text-muted">ID: #@program.Id</small>
+                                            </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="d-flex align-items-center">
-                                            <i class="bi bi-calendar-check text-muted me-2"></i>
-                                            @program.EndDate.ToShortDateString()
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-light text-dark border status-badge">
-                                            <i class="bi bi-people-fill me-1"></i> @program.Capacity
+                                        <span class="badge bg-soft-info text-info rounded-pill px-3">
+                                            @program.StartDate.ToString("yyyy/MM/dd")
                                         </span>
                                     </td>
-                                    <td class="text-end">
-                                        <div class="btn-group gap-2">
-
-                                            @if (program.is_posted)
+                                    <td>
+                                        <span class="badge bg-soft-secondary text-secondary rounded-pill px-3">
+                                            @program.EndDate.ToString("yyyy/MM/dd")
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="fw-bold text-dark">@program.Capacity</div>
+                                        <small class="text-muted">مقعد</small>
+                                    </td>
+                                    <td class="text-center">
+                                        @if (program.is_posted)
+                                        {
+                                            <span class="status-indicator status-online"></span>
+                                            <span class="text-success small fw-bold">منشور</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="status-indicator status-offline"></span>
+                                            <span class="text-muted small fw-bold">مسودة</span>
+                                        }
+                                    </td>
+                                    <td class="pe-4">
+                                        <div class="d-flex justify-content-start gap-2">
+                                            @if (!program.is_posted)
                                             {
-                                                <a asp-action="Details" asp-route-id="@program.Id" class="btn btn-primary btn-sm rounded-pill px-3 btn-action">
-                                                    <i class="bi bi-cloud-check"></i> Posted
+                                                <a asp-action="Post" asp-controller="Applications" asp-route-id="@program.Id"
+                                                   class="btn btn-icon btn-soft-success" title="نشر الآن">
+                                                    <i class="bi bi-send-fill"></i>
                                                 </a>
                                             }
-                                            else
-                                            {
-                                                <a asp-action="Post" asp-controller="Applications" asp-route-id="@program.Id" class="btn btn-outline-success btn-sm btn-action">
-                                                    <i class="bi bi-send-fill"></i> Post
-                                                </a>
-                                            }
-        
-                                            <a asp-action="Details" asp-route-id="@program.Id" class="btn btn-outline-info btn-sm btn-action">
-                                                <i class="bi bi-eye"></i> Details
+                                            <a asp-action="Details" asp-route-id="@program.Id" class="btn btn-icon btn-soft-primary" title="التفاصيل">
+                                                <i class="bi bi-eye"></i>
                                             </a>
-                                            <a asp-action="Edit" asp-route-id="@program.Id" class="btn btn-outline-warning btn-sm btn-action text-dark">
-                                                <i class="bi bi-pencil-square"></i> Edit
+                                            <a asp-action="Edit" asp-route-id="@program.Id" class="btn btn-icon btn-soft-warning" title="تعديل">
+                                                <i class="bi bi-pencil-square"></i>
                                             </a>
                                         </div>
                                     </td>
@@ -91,16 +109,111 @@
             else
             {
                 <div class="text-center py-5">
-                    <div class="mb-3">
-                        <i class="bi bi-folder2-open display-1 text-muted"></i>
+                    <div class="empty-state-icon mb-3">
+                        <i class="bi bi-folder2-open display-2 text-light"></i>
                     </div>
-                    <h4 class="text-secondary">No programs found</h4>
-                    <p class="text-muted">It looks like you haven't created any training programs yet.</p>
-                    <a asp-action="Create" class="btn btn-primary mt-2">
-                        Get Started
-                    </a>
+                    <h4 class="fw-bold text-secondary">لا توجد برامج حالياً</h4>
+                    <p class="text-muted">لم تقم بإضافة أي برامج تدريبية للنظام بعد.</p>
+                    <a asp-action="Create" class="btn btn-primary px-4 mt-2 rounded-pill"> ابدأ الآن </a>
                 </div>
             }
         </div>
     </div>
 </div>
+
+<style>
+    /* ألوان الأيقونات والحالات */
+    .bg-soft-info {
+        background: #e0f2fe;
+        color: #0369a1;
+    }
+
+    .bg-soft-secondary {
+        background: #f1f5f9;
+        color: #475569;
+    }
+
+    .bg-soft-success {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .program-avatar {
+        width: 45px;
+        height: 45px;
+        background: #f8fafc;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e2e8f0;
+    }
+
+    /* أزرار العمليات الدائرية */
+    .btn-icon {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        transition: all 0.2s;
+        border: none;
+    }
+
+    .btn-soft-primary {
+        background: #e0e7ff;
+        color: #4338ca;
+    }
+
+        .btn-soft-primary:hover {
+            background: #4338ca;
+            color: white;
+        }
+
+    .btn-soft-warning {
+        background: #fef3c7;
+        color: #d97706;
+    }
+
+        .btn-soft-warning:hover {
+            background: #d97706;
+            color: white;
+        }
+
+    .btn-soft-success {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+        .btn-soft-success:hover {
+            background: #15803d;
+            color: white;
+        }
+
+    /* مؤشر الحالة */
+    .status-indicator {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-left: 6px;
+    }
+
+    .status-online {
+        background: #10b981;
+        box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+    }
+
+    .status-offline {
+        background: #94a3b8;
+    }
+
+    .table thead th {
+        font-weight: 700;
+        font-size: 0.8rem;
+        color: #64748b;
+        background-color: #f8fafc;
+    }
+</style>

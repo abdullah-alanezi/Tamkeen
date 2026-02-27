@@ -2,7 +2,7 @@
 @model TrainingProgramViewModel
 
 @{
-    ViewData["Title"] = "Create Training Program";
+    ViewData["Title"] = "إنشاء برنامج تدريبي جديد";
 }
 
 <style>
@@ -13,15 +13,18 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }
 
+    /* ضبط التسميات العائمة للعربية */
     .form-floating > label {
+        right: 0;
+        left: auto;
+        padding-right: 1.25rem;
         color: #718096;
-        padding-left: 1.25rem;
     }
 
     .form-floating > .form-control:focus ~ label,
     .form-floating > .form-control:not(:placeholder-shown) ~ label {
-        transform: scale(0.85) translateY(-0.75rem) translateX(0.15rem);
-        color: #4e73df;
+        transform: scale(0.85) translateY(-0.75rem) translateX(-0.15rem);
+        color: #1e3a8a;
         font-weight: 600;
     }
 
@@ -32,20 +35,20 @@
         transition: all 0.2s ease-in-out;
     }
 
-    .form-control-modern:focus {
-        border-color: #4e73df;
-        box-shadow: 0 0 0 4px rgba(78, 115, 223, 0.08);
-    }
+        .form-control-modern:focus {
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.08);
+        }
 
     .section-icon {
-        width: 40px;
-        height: 40px;
+        width: 42px;
+        height: 42px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #f0f4ff;
-        color: #4e73df;
-        border-radius: 10px;
+        background: #eff6ff;
+        color: #1e3a8a;
+        border-radius: 12px;
     }
 
     .date-card {
@@ -55,17 +58,17 @@
     }
 </style>
 
-<div class="container py-5">
+<div class="container py-5 text-end">
     <div class="row mb-5">
         <div class="col-lg-8">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-2">
-                    <li class="breadcrumb-item"><a asp-action="Index" class="text-decoration-none">Programs</a></li>
-                    <li class="breadcrumb-item active">New Program</li>
+                <ol class="breadcrumb mb-2 p-0">
+                    <li class="breadcrumb-item"><a asp-action="Index" class="text-decoration-none text-muted">البرامج التدريبية</a></li>
+                    <li class="breadcrumb-item active fw-bold text-primary">إضافة برنامج جديد</li>
                 </ol>
             </nav>
-            <h2 class="fw-bold text-dark">Create Training Program</h2>
-            <p class="text-muted">Define the curriculum, timeline, and enrollment limits for the new cohort.</p>
+            <h2 class="fw-bold text-dark mb-2">إنشاء برنامج تدريبي</h2>
+            <p class="text-muted">قم بتحديد المنهج الدراسي، الجدول الزمني، والقدرة الاستيعابية للدفعة الجديدة.</p>
         </div>
     </div>
 
@@ -74,21 +77,21 @@
             <div class="col-lg-8">
                 <div class="glass-panel p-4 p-md-5">
                     <div class="d-flex align-items-center mb-4">
-                        <div class="section-icon me-3">
-                            <i class="bi bi-info-circle-fill"></i>
+                        <div class="section-icon ms-3">
+                            <i class="bi bi-info-circle-fill fs-5"></i>
                         </div>
-                        <h5 class="mb-0 fw-bold">General Information</h5>
+                        <h5 class="mb-0 fw-bold text-dark">المعلومات العامة</h5>
                     </div>
 
                     <div class="form-floating mb-4">
-                        <input asp-for="Name" class="form-control form-control-modern" placeholder="Program Name" id="programName" />
-                        <label for="programName">Program Name</label>
+                        <input asp-for="Name" class="form-control form-control-modern" placeholder="اسم البرنامج" id="programName" />
+                        <label for="programName">اسم البرنامج التدريبي</label>
                         <span asp-validation-for="Name" class="text-danger small"></span>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <textarea asp-for="Description" class="form-control form-control-modern" placeholder="Describe the program objectives..." id="desc" style="height: 180px"></textarea>
-                        <label for="desc">Program Description</label>
+                        <textarea asp-for="Description" class="form-control form-control-modern" placeholder="وصف البرنامج..." id="desc" style="height: 200px"></textarea>
+                        <label for="desc">وصف تفصيلي عن الأهداف والمخرجات</label>
                         <span asp-validation-for="Description" class="text-danger small"></span>
                     </div>
                 </div>
@@ -97,53 +100,52 @@
             <div class="col-lg-4">
                 <div class="glass-panel p-4 mb-4">
                     <div class="d-flex align-items-center mb-4">
-                        <div class="section-icon me-3 bg-success-subtle text-success">
-                            <i class="bi bi-calendar-range-fill"></i>
+                        <div class="section-icon ms-3 bg-emerald-50 text-emerald-600" style="color: #059669; background: #ecfdf5;">
+                            <i class="bi bi-calendar-range-fill fs-5"></i>
                         </div>
-                        <h5 class="mb-0 fw-bold">Logistics</h5>
+                        <h5 class="mb-0 fw-bold text-dark">التفاصيل اللوجستية</h5>
                     </div>
 
                     <div class="date-card p-3 mb-4">
                         <div class="mb-3">
-                            <label asp-for="StartDate" class="form-label small fw-bold text-uppercase text-secondary">Start Date</label>
+                            <label asp-for="StartDate" class="form-label small fw-bold text-muted text-uppercase">تاريخ البدء</label>
                             <input asp-for="StartDate" type="date" class="form-control form-control-modern border-0 shadow-sm" />
                             <span asp-validation-for="StartDate" class="text-danger small"></span>
                         </div>
                         <div class="mb-0">
-                            <label asp-for="EndDate" class="form-label small fw-bold text-uppercase text-secondary">End Date</label>
+                            <label asp-for="EndDate" class="form-label small fw-bold text-muted text-uppercase">تاريخ الانتهاء</label>
                             <input asp-for="EndDate" type="date" class="form-control form-control-modern border-0 shadow-sm" />
                             <span asp-validation-for="EndDate" class="text-danger small"></span>
                         </div>
                     </div>
 
                     <div class="mb-4">
-                        <label asp-for="Capacity" class="form-label small fw-bold text-uppercase text-secondary">Trainee Capacity</label>
+                        <label asp-for="Capacity" class="form-label small fw-bold text-muted text-uppercase">الطاقة الاستيعابية</label>
                         <div class="input-group">
-                            <span class="input-group-text bg-white border-end-0 rounded-start-3" style="border: 1.5px solid #edf2f7;">
+                            <span class="input-group-text bg-white border-start-0 rounded-end-3" style="border: 1.5px solid #edf2f7;">
                                 <i class="bi bi-people text-muted"></i>
                             </span>
-                            <input asp-for="Capacity" type="number" class="form-control form-control-modern border-start-0" placeholder="e.g. 25" />
+                            <input asp-for="Capacity" type="number" class="form-control form-control-modern border-end-0" placeholder="مثال: 25" />
                         </div>
                         <span asp-validation-for="Capacity" class="text-danger small"></span>
                     </div>
 
-
                     <hr class="my-4 opacity-50">
 
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-success btn-lg rounded-pill shadow-sm fw-bold py-3">
-                            <i class="bi bi-cloud-arrow-up me-2"></i> Create Program
+                    <div class="d-grid gap-3">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-primary fw-bold py-3">
+                            <i class="bi bi-cloud-arrow-up ms-2"></i> حفظ ونشر البرنامج
                         </button>
-                        <a asp-action="Index" class="btn btn-outline-secondary btn-lg rounded-pill py-3 small fw-bold">
-                            Discard Draft
+                        <a asp-action="Index" class="btn btn-light btn-lg rounded-pill py-3 small fw-bold text-muted border">
+                            إلغاء المسودة
                         </a>
                     </div>
                 </div>
 
-                <div class="alert bg-primary-subtle border-0 rounded-4 p-4">
-                    <h6 class="fw-bold text-primary"><i class="bi bi-lightbulb me-2"></i> Pro Tip</h6>
-                    <p class="mb-0 small text-primary-emphasis opacity-75">
-                        Programs with detailed descriptions and realistic capacities see 40% higher engagement from potential trainees.
+                <div class="alert border-0 rounded-4 p-4" style="background: #eff6ff;">
+                    <h6 class="fw-bold text-primary mb-2"><i class="bi bi-lightbulb ms-2"></i> نصيحة ذكية</h6>
+                    <p class="mb-0 small text-primary-emphasis opacity-75 lh-base">
+                        البرامج التي تحتوي على وصف دقيق ومعايير واضحة تزيد نسبة الإقبال عليها بمقدار 40% من قبل المتدربين المتميزين.
                     </p>
                 </div>
             </div>

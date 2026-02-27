@@ -2,55 +2,109 @@
 @model IEnumerable<UserRolesViewModel>
 
 @{
-    ViewData["Title"] = "User Management";
+    ViewData["Title"] = "إدارة مستخدمي النظام";
 }
 
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="text-primary font-weight-bold">Tamkeen | User Management</h2>
-        <span class="badge bg-secondary">Total Users: @Model.Count()</span>
+<div class="d-md-flex justify-content-between align-items-end mb-4 px-1">
+    <div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item"><a href="#" class="text-decoration-none small">لوحة التحكم</a></li>
+                <li class="breadcrumb-item active small" aria-current="page">المستخدمين</li>
+            </ol>
+        </nav>
+        <h3 class="fw-bold text-dark mb-1">
+            إدارة صلاحيات المستخدمين
+        </h3>
+        <p class="text-muted small mb-0">يمكنك التحكم في أدوار المستخدمين وتحديث صلاحيات الوصول للنظام.</p>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body p-0">
-            <table class="table table-hover mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th class="ps-4">Username</th>
-                        <th>Email Address</th>
-                        <th>Current Role</th>
-                        <th>Change Role</th>
-                        <th class="text-center">Actions</th>
+    <div class="mt-3 mt-md-0 d-flex align-items-center bg-white shadow-sm border rounded-4 px-3 py-2">
+        <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-3 me-2 p-2">
+            <i class="bi bi-people fs-5"></i>
+        </div>
+        <div>
+            <span class="text-muted d-block" style="font-size: 0.75rem;">إجمالي الحسابات</span>
+            <span class="fw-bold text-dark fs-5">@Model.Count()</span>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="card-header bg-white py-3 border-bottom border-light">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="mb-0 fw-bold"><i class="bi bi-list-ul ms-2 text-primary"></i>قائمة المستخدمين</h6>
+            <div class="input-group input-group-sm w-auto">
+                <input type="text" class="form-control border-light bg-light rounded-start-pill px-3" placeholder="بحث عن مستخدم...">
+                <button class="btn btn-primary rounded-end-pill px-3"><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr class="small text-muted text-uppercase">
+                        <th class="ps-4 py-3">المستخدم</th>
+                        <th class="py-3">البريد الإلكتروني</th>
+                        <th class="py-3">الدور الحالي</th>
+                        <th class="py-3 text-center">تغيير الصلاحية</th>
+                        <th class="pe-4 py-3 text-start">إجراءات</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var user in Model)
                     {
                         <tr>
-                            <td class="ps-4 align-middle font-weight-bold">@user.UserName</td>
-                            <td class="align-middle">@user.Email</td>
-                            <td class="align-middle">
-                                <span class="badge rounded-pill @(user.CurrentRole == "Admin" ? "bg-danger" : "bg-info text-dark")">
-                                    @user.CurrentRole
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-circle ms-3">
+                                        @user.UserName.Substring(0, 1).ToUpper()
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark">@user.UserName</div>
+                                        
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="text-secondary small">@user.Email</span>
+                            </td>
+                            <td>
+                                @{
+                                    var (roleNameAr, roleClass) = user.CurrentRole switch
+                                    {
+                                        "Admin" => ("مدير نظام", "role-admin"),
+                                        "HR" => ("الموارد البشرية", "role-hr"),
+                                        "Manager" => ("مدير برنامج", "role-manager"),
+                                        "Trainee" => ("متدرب", "role-trainee"),
+                                        _ => (user.CurrentRole, "bg-secondary text-white")
+                                    };
+                                }
+                                <span class="badge-role @roleClass">
+                                    <span class="dot"></span> @roleNameAr
                                 </span>
                             </td>
-                            <td class="align-middle">
-                                <form asp-action="ChangeRole" method="post" class="d-flex gap-2">
+                            <td>
+                                <form asp-action="ChangeRole" method="post" class="d-flex gap-1 align-items-center justify-content-center">
                                     <input type="hidden" name="userId" value="@user.UserId" />
-                                    <select name="newRole" class="form-select form-select-sm w-auto">
+                                    <select name="newRole" class="form-select form-select-sm border-light bg-light rounded-pill px-3" style="width: 140px;">
                                         @foreach (var role in user.AllRoles)
                                         {
                                             <option value="@role" selected="@(role == user.CurrentRole)">@role</option>
                                         }
                                     </select>
-                                    <button type="submit" class="btn btn-sm btn-outline-success">Update</button>
+                                    <button type="submit" class="btn btn-sm btn-primary rounded-circle shadow-sm" style="width:32px; height:32px; padding:0;">
+                                        <i class="bi bi-check2"></i>
+                                    </button>
                                 </form>
                             </td>
-                            <td class="align-middle text-center">
-                                <form asp-action="DeleteUser" method="post" onsubmit="return confirm('Are you sure you want to delete this user? This action cannot be undone.');">
+                            <td class="pe-4 text-start">
+                                <form asp-action="DeleteUser" method="post" onsubmit="return confirm('هل أنت متأكد من حذف هذا المستخدم نهائياً؟');" class="d-inline">
                                     <input type="hidden" name="userId" value="@user.UserId" />
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i> Delete
+                                    <button type="submit" class="btn btn-sm btn-link text-danger p-0 text-decoration-none fw-bold small">
+                                        <i class="bi bi-trash3 me-1"></i> حذف الحساب
                                     </button>
                                 </form>
                             </td>
@@ -61,3 +115,96 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* المتغيرات والألوان المتناسقة مع الـ Layout */
+    .avatar-circle {
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(135deg, var(--tk-primary, #1e3a8a) 0%, #3b82f6 100%);
+        color: white;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(30, 58, 138, 0.15);
+    }
+
+    .extra-small {
+        font-size: 0.7rem;
+    }
+
+    /* تنسيق الشارات (Roles) بشكل عصري */
+    .badge-role {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 12px;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+        .badge-role .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+
+    .role-admin {
+        background-color: #fee2e2;
+        color: #dc2626;
+    }
+
+        .role-admin .dot {
+            background-color: #dc2626;
+        }
+
+    .role-hr {
+        background-color: #f3e8ff;
+        color: #7c3aed;
+    }
+
+        .role-hr .dot {
+            background-color: #7c3aed;
+        }
+
+    .role-manager {
+        background-color: #dbeafe;
+        color: #2563eb;
+    }
+
+        .role-manager .dot {
+            background-color: #2563eb;
+        }
+
+    .role-trainee {
+        background-color: #dcfce7;
+        color: #16a34a;
+    }
+
+        .role-trainee .dot {
+            background-color: #16a34a;
+        }
+
+    /* تعديل الجدول */
+    .table thead th {
+        border-top: none;
+        letter-spacing: 0.5px;
+    }
+
+    .table tbody tr:hover {
+        background-color: #fcfdfe;
+    }
+
+    .form-select-sm:focus {
+        box-shadow: none;
+        border-color: var(--tk-primary);
+    }
+
+    .btn-primary {
+        background-color: var(--tk-primary) !important;
+        border: none;
+    }
+</style>

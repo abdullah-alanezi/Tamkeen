@@ -1,22 +1,25 @@
 ﻿@model Tamkeen.Domain.Entities.ProgramPost
 
+@{
+    ViewData["Title"] = "تفاصيل المتقدمين";
+}
 
-<div class="container-fluid py-4" style="background-color: #f8fafc; min-height: 100vh;">
-    
+<div class="container-fluid py-4 text-end" style="background-color: #f8fafc; min-height: 100vh;">
+
     <div class="row mb-4">
         <div class="col-12">
             <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 15px;">
                 <div class="card-body p-0">
                     <div class="bg-primary p-4 text-white d-md-flex justify-content-between align-items-center">
                         <div>
-                            <span class="badge bg-white text-primary mb-2 fw-bold">Active Training Program</span>
-                            <h1 class="display-6 fw-bold mb-0">@Model.trainingProgram.Name</h1>
-                            <p class="opacity-75 mb-0">@Model.trainingProgram.Description</p>
+                            <span class="badge bg-white text-primary mb-2 fw-bold px-3 rounded-pill">برنامج تدريبي نشط</span>
+                            <h1 class="display-6 fw-bold mb-2">@Model.trainingProgram.Name</h1>
+                            <p class="opacity-75 mb-0" style="max-width: 800px;">@Model.trainingProgram.Description</p>
                         </div>
                         <div class="mt-3 mt-md-0">
-                            <button class="btn btn-light fw-bold px-4 rounded-pill shadow-sm">
-                                <i class="bi bi-pencil-square me-2"></i>Edit Program
-                            </button>
+                            <a asp-action="Edit" asp-controller="TrainingPrograms" asp-route-id="@Model.trainingProgram.Id" class="btn btn-light fw-bold px-4 rounded-pill shadow-sm text-primary">
+                                <i class="bi bi-pencil-square ms-2"></i>تعديل البرنامج
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -28,39 +31,45 @@
         <div class="col-lg-3">
             <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px;">
                 <div class="card-body">
-                    <h6 class="text-uppercase text-muted fw-bold small mb-3">Program Stats</h6>
-                    
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="p-2 bg-info bg-opacity-10 rounded-3 me-3">
+                    <h6 class="text-uppercase text-muted fw-bold small mb-4 border-bottom pb-2">إحصائيات البرنامج</h6>
+
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="p-3 bg-info bg-opacity-10 rounded-3 ms-3">
                             <i class="bi bi-people-fill text-info fs-4"></i>
                         </div>
                         <div>
-                            <small class="text-muted d-block">Applications</small>
-                            <span class="fw-bold fs-5">@Model.application.Count()</span>
+                            <small class="text-muted d-block">إجمالي الطلبات</small>
+                            <span class="fw-bold fs-5">@Model.application.Count() طلب</span>
                         </div>
                     </div>
 
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="p-2 bg-success bg-opacity-10 rounded-3 me-3">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="p-3 bg-success bg-opacity-10 rounded-3 ms-3">
                             <i class="bi bi-pie-chart-fill text-success fs-4"></i>
                         </div>
                         <div>
-                            <small class="text-muted d-block">Capacity</small>
-                            <span class="fw-bold fs-5">@Model.trainingProgram.Capacity Seats</span>
+                            <small class="text-muted d-block">الطاقة الاستيعابية</small>
+                            <span class="fw-bold fs-5">@Model.trainingProgram.Capacity مقعد</span>
                         </div>
                     </div>
 
                     <hr class="text-muted opacity-25">
 
-                    <h6 class="text-uppercase text-muted fw-bold small mb-3">Timeline</h6>
+                    <h6 class="text-uppercase text-muted fw-bold small mb-3">الجدول الزمني</h6>
                     <div class="small">
-                        <div class="mb-2">
-                            <i class="bi bi-calendar-check me-2 text-primary"></i>
-                            <strong>Starts:</strong> @Model.trainingProgram.StartDate.ToString("MMM dd, yyyy")
+                        <div class="mb-3 d-flex align-items-center">
+                            <i class="bi bi-calendar-check ms-2 text-primary fs-5"></i>
+                            <div>
+                                <div class="text-muted" style="font-size: 0.7rem;">تاريخ البدء</div>
+                                <strong>@Model.trainingProgram.StartDate.ToString("yyyy/MM/dd")</strong>
+                            </div>
                         </div>
-                        <div>
-                            <i class="bi bi-calendar-x me-2 text-danger"></i>
-                            <strong>Ends:</strong> @Model.trainingProgram.EndDate.ToString("MMM dd, yyyy")
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-calendar-x ms-2 text-danger fs-5"></i>
+                            <div>
+                                <div class="text-muted" style="font-size: 0.7rem;">تاريخ الانتهاء</div>
+                                <strong>@Model.trainingProgram.EndDate.ToString("yyyy/MM/dd")</strong>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -71,21 +80,22 @@
             <div class="card border-0 shadow-sm" style="border-radius: 12px;">
                 <div class="card-header bg-white py-3 border-0">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0 fw-bold">Applicants Queue</h5>
-                        <div class="input-group w-25">
-                             <input type="text" class="form-control form-control-sm border-light bg-light" placeholder="Search...">
+                        <h5 class="mb-0 fw-bold text-dark">قائمة المتقدمين (Queue)</h5>
+                        <div class="input-group w-50 search-wrapper">
+                            <span class="input-group-text bg-light border-0"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control border-0 bg-light shadow-none" placeholder="ابحث عن متقدم باسمه أو بريده...">
                         </div>
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
+                    <table class="table table-hover align-middle mb-0 text-end">
+                        <thead class="bg-light">
                             <tr class="small text-uppercase text-muted">
-                                <th class="ps-4">Full Name & Contact</th>
-                                <th>University / Major</th>
-                                <th>Status</th>
-                                <th>Document</th>
-                                <th class="text-end pe-4">Manage</th>
+                                <th class="pr-4 py-3" style="padding-right: 1.5rem;">الاسم الكامل والتواصل</th>
+                                <th class="py-3">الجامعة / التخصص</th>
+                                <th class="py-3">حالة الطلب</th>
+                                <th class="py-3">المرفقات</th>
+                                <th class="text-start pl-4 py-3" style="padding-left: 1.5rem;">إدارة</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -94,44 +104,62 @@
                                 @foreach (var app in Model.application)
                                 {
                                     <tr>
-                                        <td class="ps-4">
+                                        <td style="padding-right: 1.5rem;">
                                             <div class="d-flex align-items-center">
-                                                <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold me-3" style="width: 40px; height: 40px;">
+                                                <div class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center fw-bold ms-3 shadow-sm" style="width: 42px; height: 42px;">
                                                     @app.FullName.Substring(0, 1).ToUpper()
                                                 </div>
                                                 <div>
-                                                    <div class="fw-bold">@app.FullName</div>
+                                                    <div class="fw-bold text-dark">@app.FullName</div>
                                                     <small class="text-muted">@app.Email</small>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="small fw-semibold">@app.University</div>
+                                            <div class="fw-semibold text-dark small">@app.University</div>
                                             <div class="text-muted small">@app.Major</div>
                                         </td>
                                         <td>
-                                            <span class="badge rounded-pill bg-warning-subtle text-warning px-3 py-2 border border-warning border-opacity-25">
-                                                @app.Status
+                                            @{
+                                                var (statusTxt, statusCls) = app.Status switch
+                                                {
+                                                    Tamkeen.Domain.Enums.ApplicationStatus.Pending => ("قيد الانتظار", "bg-warning-subtle text-warning border-warning"),
+                                                    Tamkeen.Domain.Enums.ApplicationStatus.UnderReview => ("تحت المراجعة", "bg-info-subtle text-info border-info"),
+                                                    Tamkeen.Domain.Enums.ApplicationStatus.Accepted => ("مقبول", "bg-success-subtle text-success border-success"),
+                                                    Tamkeen.Domain.Enums.ApplicationStatus.Rejected => ("مرفوض", "bg-danger-subtle text-danger border-danger"),
+                                                    _ => ("غير محدد", "bg-light text-dark")
+                                                };
+                                            }
+                                            <span class="badge rounded-pill @statusCls px-3 py-2 border border-opacity-25">
+                                                <i class="bi bi-dot ms-1"></i>@statusTxt
                                             </span>
                                         </td>
                                         <td>
-                                            <a href="/uploads/@app.CVPath" target="_blank" class="btn btn-sm btn-light border text-danger">
-                                                <i class="bi bi-file-earmark-pdf-fill me-1"></i>CV
+                                            @if (!string.IsNullOrEmpty(app.CVPath))
+                                            {
+                                                <a href="/uploads/@app.CVPath" target="_blank" class="btn btn-sm btn-outline-danger border-0">
+                                                    <i class="bi bi-file-earmark-pdf-fill fs-5"></i>
+                                                    <span class="small d-block" style="font-size: 0.6rem;">السيرة الذاتية</span>
+                                                </a>
+                                            }
+                                        </td>
+                                        <td class="text-start" style="padding-left: 1.5rem;">
+                                            <a asp-action="ApplicationDetail" asp-route-id="@app.Id" class="btn btn-sm btn-primary rounded-pill px-4 shadow-sm">
+                                                مراجعة الطلب
                                             </a>
                                         </td>
-                                        <td class="text-end pe-4">
-                                            <a asp-action="ApplicationDetail" asp-route-id ="@app.Id" class="btn btn-sm btn-outline-primary rounded-pill px-3">Review</a>
-                                        </td>
                                     </tr>
-                                    
                                 }
                             }
                             else
                             {
                                 <tr>
-                                    <td colspan="5" class="text-center py-5 text-muted">
-                                        <i class="bi bi-inbox fs-1 d-block mb-2 opacity-25"></i>
-                                        No applications received yet.
+                                    <td colspan="5" class="text-center py-5 text-muted bg-white">
+                                        <div class="py-4">
+                                            <i class="bi bi-inbox fs-1 d-block mb-3 opacity-25"></i>
+                                            <h5 class="fw-light">لا توجد طلبات تقديم لهذا البرنامج حتى الآن</h5>
+                                            <p class="small text-secondary">سيظهر المتقدمون هنا بمجرد بدء استقبال الطلبات.</p>
+                                        </div>
                                     </td>
                                 </tr>
                             }
@@ -144,8 +172,32 @@
 </div>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 <style>
-    .table thead th { font-weight: 600; font-size: 0.8rem; letter-spacing: 0.025em; }
-    .card { transition: all 0.3s ease; }
-    .bg-primary { background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%) !important; }
+    .bg-primary {
+        background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%) !important;
+    }
+
+    .table thead th {
+        font-weight: 700;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        color: #64748b;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+    .search-wrapper .input-group-text {
+        border-radius: 0 10px 10px 0;
+    }
+
+    .search-wrapper .form-control {
+        border-radius: 10px 0 0 10px;
+    }
+
+    .badge {
+        font-weight: 600;
+    }
 </style>
