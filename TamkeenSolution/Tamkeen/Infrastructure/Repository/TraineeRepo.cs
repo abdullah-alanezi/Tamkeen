@@ -48,7 +48,7 @@ namespace Tamkeen.Infrastructure.Repository
 
         public  async Task<List<Trainee>> GetAllAsync()
         {
-            var Trainees = await _context.Trainees.Include(x=>x.User).ToListAsync();
+            var Trainees = await _context.Trainees.Include(x=>x.User).Include(x=>x.User.UserInfo).ToListAsync();
 
             return Trainees;
         }

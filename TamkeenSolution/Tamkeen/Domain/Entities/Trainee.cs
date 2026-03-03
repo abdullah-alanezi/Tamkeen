@@ -9,9 +9,9 @@ namespace Tamkeen.Domain.Entities
         public int UserId { get; set; }
         public ApplicationUser User { get; set; }
 
-        public string University { get; set; }
-        public string Major { get; set; }
-        public double GPA { get; set; }
+        public string? University { get; set; }
+        public string? Major { get; set; }
+        public double? GPA { get; set; }
 
         public TraineeStatus Status { get; set; }
 

@@ -85,6 +85,9 @@ namespace Tamkeen.Infrastructure.Repository
             if (status == ApplicationStatus.Accepted)
             {
                 await _traineeAccountService.CreateTraineeAccountAsync(application);
+
+
+
             }
 
 

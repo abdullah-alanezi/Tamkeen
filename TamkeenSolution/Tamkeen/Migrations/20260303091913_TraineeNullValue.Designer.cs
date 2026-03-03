@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tamkeen.Infrastructure.Database;
 
@@ -11,9 +12,11 @@ using Tamkeen.Infrastructure.Database;
 namespace Tamkeen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260303091913_TraineeNullValue")]
+    partial class TraineeNullValue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -536,9 +539,7 @@ namespace Tamkeen.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
+                        .HasColumnType("int");
 
                     b.Property<string>("University")
                         .HasColumnType("nvarchar(max)");

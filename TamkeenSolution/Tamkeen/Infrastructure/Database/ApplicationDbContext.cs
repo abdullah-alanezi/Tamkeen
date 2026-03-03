@@ -31,6 +31,7 @@ namespace Tamkeen.Infrastructure.Database
                 entity.HasOne(p => p.User).WithOne(p => p.TraineeProfile).OnDelete(DeleteBehavior.Cascade);
                 entity.HasMany(x => x.Documents).WithOne(x => x.Trainee).OnDelete(DeleteBehavior.Restrict);
                 entity.HasMany(x => x.Enrollments).WithOne(x => x.Trainee).OnDelete(DeleteBehavior.Restrict);
+                entity.Property(x=>x.Status).HasDefaultValue(TraineeStatus.Applicant);
                 }
                 );
 

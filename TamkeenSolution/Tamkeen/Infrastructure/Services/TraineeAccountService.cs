@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Tamkeen.Application.Interfaces;
 using Tamkeen.Domain.Entities;
 using Tamkeen.Infrastructure.Database;
 
@@ -8,13 +9,18 @@ namespace Tamkeen.Infrastructure.Services
     {
         private readonly UserManager<IdentityUser<int>> _userManager;
         private readonly ApplicationDbContext _context;
+        private readonly ITraineeRepository _traineeRepo;
 
         public TraineeAccountService(
             UserManager<IdentityUser<int>> userManager,
-            ApplicationDbContext context)
+            ApplicationDbContext context,
+            ITraineeRepository traineeRepo
+
+            )
         {
             _userManager = userManager;
             _context = context;
+            _traineeRepo = traineeRepo;
         }
 
 
@@ -58,6 +64,16 @@ namespace Tamkeen.Infrastructure.Services
 
 
             await _context.ApplicationUsers.AddAsync(appUser);
+
+            var trainee = new Trainee
+            {
+                User = appUser,
+
+            };
+
+            await _traineeRepo.AddAsync(trainee);
+
+            
         }
     }
 }

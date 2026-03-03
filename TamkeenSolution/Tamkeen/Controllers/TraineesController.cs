@@ -44,5 +44,11 @@ namespace Tamkeen.Controllers
              _traineeRepo.Update(trainee);
             return RedirectToAction("Edit", trainee.Id);
         }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }
