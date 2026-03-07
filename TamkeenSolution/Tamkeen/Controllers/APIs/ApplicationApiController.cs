@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Tamkeen.Application.DTOs;
 using Tamkeen.Application.Interfaces;
 using Tamkeen.Domain.Enums;
 
@@ -15,22 +16,26 @@ namespace Tamkeen.Controllers.APIs
             _appRepo = appRepo;
         }
   
-        // ✅ POST: api/applications
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Domain.Entities.Application model)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        
+[HttpGet]
+public async Task<ActionResult<List<ApplicationDto>>> GetAll()
+{
+    var entities = await _appRepo.GetAllAsync();
 
-            model.Status = ApplicationStatus.Pending;
+    var dtos = entities.Select(a => new ApplicationDto
+    {
+        Id = a.Id,
+        FullName = a.FullName,
+        Email = a.Email,
+        University = a.University,
+        Major = a.Major,
+        CVPath = a.CVPath,
+        ProgramPostId = a.programPostId,
+        ProgramPostName = a.programPost.trainingProgram.Name,
+        Status = a.Status.ToString()
+    }).ToList();
 
-            await _appRepo.AddAsync(model);
-            
-
-            return Ok(new
-            {
-                message = "Application submitted successfully"
-            });
-        }
+    return dtos;
+}
     }
 }

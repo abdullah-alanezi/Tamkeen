@@ -37,7 +37,7 @@ namespace Tamkeen.Infrastructure.Repository
 
         public async Task<List<Domain.Entities.Application>> GetAllAsync()
         {
-            var Application = await _context.Applications.ToListAsync();
+            var Application = await _context.Applications.Include(x=>x.programPost.trainingProgram).ToListAsync();
 
             return Application;
 
